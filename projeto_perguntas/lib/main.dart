@@ -3,13 +3,23 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyHomePage());
+  runApp( MyHomePage());
 }
 
 
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+ List<String> perguntas =[
+"Pegunta 1", "Pergunta 2", "pegunta 3"
+
+];
+var perguntaSelecionada = 0;
+ void responder(){
+  perguntaSelecionada++;
+  print ('Pergunta respondida!!');
+ }
+
+   MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +30,31 @@ class MyHomePage extends StatelessWidget {
       ),
       home:Scaffold(
         appBar: AppBar(
-          title: const Text('pegrguntas'),
+          title: Center(
+            child: const Text('pegrguntas')),
 
         ),
-        body: const Column(
-          children: [
-             Text('corpo do scarfoold'),
-          ],
+        body:  Center(
+          child: Column(
+            children: [        
+               Text( perguntas[perguntaSelecionada]),
+               ElevatedButton(
+                child: Text("Resposta 1"),
+                onPressed: responder,
+              ),
+                ElevatedButton(
+                child: Text("Resposta 2"),
+                onPressed: responder,
+              ),
+               ElevatedButton(
+                child: Text("Resposta 3"),
+                onPressed: responder,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
