@@ -1,23 +1,34 @@
+
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyHomePage());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
-  // This widget is the root of your application.
+
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return   MaterialApp(
+       theme: ThemeData(
         useMaterial3: true,
+
       ),
-      home: const MyHomePage(title: 'fisrt app felipe'),
+      home:Scaffold(
+        appBar: AppBar(
+          title: const Text('pegrguntas'),
+
+        ),
+        body: const Column(
+          children: [
+             Text('corpo do scarfoold'),
+          ],
+        ),
+      ),
     );
   }
 }
-
