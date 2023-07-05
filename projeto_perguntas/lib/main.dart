@@ -37,7 +37,10 @@ var perguntaSelecionada = 0;
         body:  Center(
           child: Column(
             children: [        
-               Text( perguntas[perguntaSelecionada]),
+               Padding(
+                 padding: const EdgeInsets.all(30.0),
+                 child: Text( perguntas[perguntaSelecionada]),
+               ),
                ElevatedButton(
                 child: Text("Resposta 1"),
                 onPressed: responder,
