@@ -1,57 +1,60 @@
-
-
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp( MyHomePage());
+void main() => runApp(const PerguntaApp());
+
+
+class PerguntaApp extends StatefulWidget {
+  const PerguntaApp({super.key});
+
+  @override
+ State<PerguntaApp> createState() => _PerguntaAppState();
 }
 
-
-
-class MyHomePage extends StatelessWidget {
- List<String> perguntas =[
-"Pegunta 1", "Pergunta 2", "pegunta 3"
-
-];
-var perguntaSelecionada = 0;
- void responder(){
-  perguntaSelecionada++;
-  print ('Pergunta respondida!!');
- }
-
-   MyHomePage({super.key});
+class _PerguntaAppState extends State<PerguntaApp> {
+  var perguntaSelecionada = 0;
+  final perguntas = [
+      'Qual é a sua cor favorita?',
+      'Qual é o seu animal favorito?',
+      'pergunta nova'
+    ];
+  void responder() {
+    setState(() {
+      perguntaSelecionada++;
+      if (perguntaSelecionada >= perguntas.length ) {
+        perguntaSelecionada = 0;
+      }
+    });
+    print(perguntaSelecionada);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return   MaterialApp(
-       theme: ThemeData(
-        useMaterial3: true,
+  
 
-      ),
-      home:Scaffold(
+    return MaterialApp(
+      home: Scaffold(
         appBar: AppBar(
-          title: Center(
-            child: const Text('pegrguntas')),
-
+          title:const Text('Perguntas'),
+          
         ),
-        body:  Center(
+        body: Center(
           child: Column(
-            children: [        
-               Padding(
-                 padding: const EdgeInsets.all(30.0),
-                 child: Text( perguntas[perguntaSelecionada]),
-               ),
-               ElevatedButton(
-                child: Text("Resposta 1"),
-                onPressed: responder,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Text(perguntas[perguntaSelecionada]),
               ),
-                ElevatedButton(
-                child: Text("Resposta 2"),
+              ElevatedButton(
                 onPressed: responder,
+                child: const Text('Resposta 1'),
               ),
-               ElevatedButton(
-                child: Text("Resposta 3"),
+              ElevatedButton(
                 onPressed: responder,
+                child: const Text('Resposta 2'),
+              ),
+              ElevatedButton(
+                onPressed: responder,
+                child: const Text('Resposta 3'),
               ),
             ],
           ),
