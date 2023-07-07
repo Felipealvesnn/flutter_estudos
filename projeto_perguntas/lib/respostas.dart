@@ -13,11 +13,11 @@ class reposta extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: quandoSelecionado,
-          child: Text(Texto),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
           ),
+          child: Text(Texto),
         ),
       ),
     );

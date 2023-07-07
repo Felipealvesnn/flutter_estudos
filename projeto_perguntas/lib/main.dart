@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_perguntas/respostas.dart';
-
-import 'Questao.dart';
+import 'package:projeto_perguntas/questionario.dart';
+import 'resultado.dart';
 
 void main() => runApp(const PerguntaApp());
 
@@ -14,7 +13,20 @@ class PerguntaApp extends StatefulWidget {
 
 class _PerguntaAppState extends State<PerguntaApp> {
   var perguntaSelecionada = 0;
-  final List<Map<String, dynamic>> perguntas = [
+    void responder() {
+    setState(() {
+      perguntaSelecionada++;
+    
+    });
+   
+  }
+
+  bool get temperguntaSelecionada{
+
+    return perguntaSelecionada < perguntas.length;
+  }
+
+  final List<Map<String, Object>> perguntas = [
     {
       'texto': 'Qual é a sua cor favorita?',
       'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco'],
@@ -32,18 +44,12 @@ class _PerguntaAppState extends State<PerguntaApp> {
       'respostas': ['wd', 'nelson', 'iure', 'felipe'],
     }
   ];
-  void responder() {
-    setState(() {
-      perguntaSelecionada++;
-      if (perguntaSelecionada >= perguntas.length) {
-        perguntaSelecionada = 0;
-      }
-    });
-    print(perguntaSelecionada);
-  }
 
   @override
   Widget build(BuildContext context) {
+   List<String> respostas = temperguntaSelecionada ?
+    perguntas[perguntaSelecionada]['respostas'] as List<String> : [];
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -54,17 +60,10 @@ class _PerguntaAppState extends State<PerguntaApp> {
             ),
           ),
         ),
-        body: Center(
-          child: Column(
-            children: [
-              Questao(perguntas[perguntaSelecionada]['texto']),
-             
-              reposta('Resposta 1', responder),
-              reposta('Resposta 2', responder),
-              reposta('Resposta 3', responder),
-            ],
-          ),
-        ),
+        body:temperguntaSelecionada ?
+        Questionario(responder,respostas,
+        perguntas[perguntaSelecionada]['texto'] as String):
+        const Resultado(),
       ),
     );
   }
