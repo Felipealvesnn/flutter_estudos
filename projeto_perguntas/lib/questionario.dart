@@ -1,23 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_perguntas/respostas.dart';
-
-import 'Questao.dart';
+import './questao.dart';
+import './resposta.dart';
 
 class Questionario extends StatelessWidget {
-  final void Function() responder;
-  final String texto;
-  final List<String> respostas;
-  const Questionario(this.responder, this.respostas, this.texto, {super.key});
+  final List<Map<String, Object>> perguntas;
+  final int perguntaSelecionada;
+  final void Function(int) quandoResponder;
+
+  const Questionario({
+    required this.perguntas,
+    required this.perguntaSelecionada,
+    required this.quandoResponder,
+    super.key,
+  });
+
+  bool get temPerguntaSelecionada {
+    return perguntaSelecionada < perguntas.length;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-           Questao(texto),
-          ...respostas.map((t) => reposta(t, responder)).toList(),
-        ],
-      ),
-    );
+    List<Map<String, Object>> respostas = temPerguntaSelecionada
+        ? perguntas[perguntaSelecionada]['respostas']
+            as List<Map<String, Object>>
+        : [];
+ 
+    return Container(
+  margin: EdgeInsets.only(top: 20),
+  child: Column(
+    children: [
+      Questao(perguntas[perguntaSelecionada]['texto'] as String),
+      ...respostas
+          .map((resp) => Resposta(
+                resp['texto'] as String,
+                () => quandoResponder(resp['nota'] as int),
+              ))
+          .toList(),
+    ],
+  ),
+);
+
   }
 }
