@@ -46,10 +46,9 @@ class MyHomePage extends StatelessWidget {
         title: const Text('App Gastos'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             child: Card(
               color: Colors.blue,
@@ -106,6 +105,42 @@ class MyHomePage extends StatelessWidget {
               }).toList()
             ],
             
+          ),
+          Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Título',
+                    ),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Valor (R\$)',
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      TextButton(
+                        child: const Text(
+                          'Nova Transação',
+                          style: TextStyle(
+                            color: Colors.purple,
+                          ),
+                          
+                        ),
+                        onPressed: () {},
+                      )
+                    ],
+                  ),
+                
+                ],
+              ),
+            ),
           )
         ],
       ),

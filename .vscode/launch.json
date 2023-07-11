@@ -17,19 +17,6 @@
             "request": "launch",
             "type": "dart"
         },
-        {
-            "name": "projeto_perguntas (profile mode)",
-            "cwd": "projeto_perguntas",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "projeto_perguntas (release mode)",
-            "cwd": "projeto_perguntas",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        }
+   
     ]
 }
