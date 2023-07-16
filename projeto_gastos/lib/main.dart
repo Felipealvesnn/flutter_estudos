@@ -24,6 +24,9 @@ class GastosApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   // const MyHomePage({super.key});
+  final tittleController =TextEditingController();
+  final valueController = TextEditingController();
+
   final _finalTransactions = [
     transaction(
       id: 't1',
@@ -113,11 +116,13 @@ class MyHomePage extends StatelessWidget {
               child: Column(
                 children: [
                   TextField(
+                    controller:  tittleController,
                     decoration: InputDecoration(
                       labelText: 'Título',
                     ),
                   ),
                   TextField(
+                    controller: valueController ,
                     decoration: InputDecoration(
                       labelText: 'Valor (R\$)',
                     ),
@@ -133,7 +138,10 @@ class MyHomePage extends StatelessWidget {
                           ),
                           
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          print(tittleController.text);
+                          print(valueController.text);
+                        },
                       )
                     ],
                   ),
