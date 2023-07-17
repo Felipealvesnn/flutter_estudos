@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 
+import 'components/transaction_form.dart';
+import 'components/transaction_list.dart';
+import 'components/transaction_user.dart';
 import 'models/transaction.dart';
 import 'package:intl/intl.dart';
 
@@ -24,23 +27,7 @@ class GastosApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   // const MyHomePage({super.key});
-  final tittleController =TextEditingController();
-  final valueController = TextEditingController();
 
-  final _finalTransactions = [
-    transaction(
-      id: 't1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now(),
-    ),
-    transaction(
-      id: 't2',
-      title: 'Conta de Luz',
-      value: 211.30,
-      date: DateTime.now(),
-    )
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -59,97 +46,7 @@ class MyHomePage extends StatelessWidget {
               elevation: 5,
             ),
           ),
-          Column(
-            children: [
-              ..._finalTransactions.map((tr) {
-                return Card(
-                  child: Row(
-                    children: [
-                      Container(  
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black54,
-                            width: 2,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                         'R\$ ${ tr.value.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.purple,
-                          ),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(tr.title,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
-                          Text(
-                            DateFormat('d MMM y').format(tr.date),
-                              style: TextStyle(
-                                color: Colors.grey,
-                              )),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              }).toList()
-            ],
-            
-          ),
-          Card(
-            elevation: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  TextField(
-                    controller:  tittleController,
-                    decoration: InputDecoration(
-                      labelText: 'Título',
-                    ),
-                  ),
-                  TextField(
-                    controller: valueController ,
-                    decoration: InputDecoration(
-                      labelText: 'Valor (R\$)',
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      TextButton(
-                        child: const Text(
-                          'Nova Transação',
-                          style: TextStyle(
-                            color: Colors.purple,
-                          ),
-                          
-                        ),
-                        onPressed: () {
-                          print(tittleController.text);
-                          print(valueController.text);
-                        },
-                      )
-                    ],
-                  ),
-                
-                ],
-              ),
-            ),
-          )
+        TRansactionUser()
         ],
       ),
     );
