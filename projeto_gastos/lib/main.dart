@@ -33,6 +33,11 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('App Gastos'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {},
+          )],
       ),
       body: 
       SingleChildScrollView(
@@ -50,7 +55,13 @@ class MyHomePage extends StatelessWidget {
         TRansactionUser()
         ],
         ),
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {},
+      ),
+      //floatingActionButtonLocation: FloatingActionButtonLocation.endDocked  ,
    );
+   
   }
 }
