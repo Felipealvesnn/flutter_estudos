@@ -25,16 +25,16 @@ class Resultado extends StatelessWidget {
         children: [
           Text(
             fraseREsultado,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 28,
             ),
           ),
-           SizedBox(height: 16), // Margem superior de 16 pixels
+           const SizedBox(height: 16), // Margem superior de 16 pixels
            ElevatedButton(
             style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 187, 19, 19),
+            backgroundColor: const Color.fromARGB(255, 187, 19, 19),
             foregroundColor: Colors.white,
-            padding: EdgeInsets.all(20.0)
+            padding: const EdgeInsets.all(20.0)
           ),
         onPressed: reiniciarQuestionario,
         child: const Text('Reiniciar?'),

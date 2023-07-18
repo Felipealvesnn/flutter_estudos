@@ -4,7 +4,8 @@ class TransctionForm extends StatelessWidget {
  
   final tittleController =TextEditingController();
   final valueController = TextEditingController();
- 
+   final void Function(String, double) onSubmit;
+    TransctionForm(this.onSubmit, {super.key});
   @override
   Widget build(BuildContext context) {
     return    Card(
@@ -15,13 +16,13 @@ class TransctionForm extends StatelessWidget {
                 children: [
                   TextField(
                     controller:  tittleController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Título',
                     ),
                   ),
                   TextField(
                     controller: valueController ,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Valor (R\$)',
                     ),
                   ),
@@ -36,10 +37,12 @@ class TransctionForm extends StatelessWidget {
                           ),
                           
                         ),
-                        onPressed: () {
-                          print(tittleController.text);
-                          print(valueController.text);
-                        },
+                        onPressed: ()=>{
+                          onSubmit(
+                            tittleController.text,
+                            double.tryParse(valueController.text) ?? 0.0,
+                          )
+                        } ,
                       )
                     ],
                   ),

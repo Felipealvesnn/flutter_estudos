@@ -26,7 +26,7 @@ class Questionario extends StatelessWidget {
         : [];
  
     return Container(
-  margin: EdgeInsets.only(top: 20),
+  margin: const EdgeInsets.only(top: 20),
   child: Column(
     children: [
       Questao(perguntas[perguntaSelecionada]['texto'] as String),

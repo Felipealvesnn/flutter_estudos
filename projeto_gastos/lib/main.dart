@@ -2,11 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'components/transaction_form.dart';
-import 'components/transaction_list.dart';
 import 'components/transaction_user.dart';
-import 'models/transaction.dart';
-import 'package:intl/intl.dart';
+
 
 void main() => runApp(const GastosApp());
 
@@ -26,6 +23,8 @@ class GastosApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
   // const MyHomePage({super.key});
 
 
@@ -35,20 +34,23 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('App Gastos'),
       ),
-      body: Column(
+      body: 
+      SingleChildScrollView(
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(
             width: double.infinity,
             child: Card(
               color: Colors.blue,
-              child: Text('Gráfico'),
               elevation: 5,
+              child: Text('Gráfico'),
             ),
           ),
         TRansactionUser()
         ],
-      ),
-    );
+        ),
+      )
+   );
   }
 }
