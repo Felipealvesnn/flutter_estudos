@@ -22,7 +22,7 @@ class Chart extends StatelessWidget {
     .fold(0.0, (sum, transaction) => sum + transaction.value);
 
       return {
-        'day': DateFormat.E().format(weekDay)[0],
+        'day': DateFormat.E().format(weekDay),
         'value': totalSum,
       };
     });
@@ -43,15 +43,21 @@ _percent(double value){
     return Card(
       elevation: 6,
       margin: const EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: groupedTransactions.map((tr) {
-          return ChartBar(
-            label: tr['day'] as String,
-            value: tr['value'] as double,
-            percentage: _percent(tr['value'] as double),
-          );
-        }).toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactions.map((tr) {     
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(
+                label: tr['day'] as String,
+                value: tr['value'] as double,
+                percentage: _percent(tr['value'] as double),
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
