@@ -14,17 +14,12 @@ class Chart extends StatelessWidget {
         Duration(days: index),
       );
 
-      double totalSum = 0.0;
-
-      for (var i = 0; i < recentTransaction.length; i++) {
-        bool sameDay = recentTransaction[i].date.day == weekDay.day;
-        bool sameMonth = recentTransaction[i].date.month == weekDay.month;
-        bool sameYear = recentTransaction[i].date.year == weekDay.year;
-
-        if (sameDay && sameMonth && sameYear) {
-          totalSum += recentTransaction[i].value;
-        }
-      }
+  double totalSum = recentTransaction
+    .where((transaction) =>
+        transaction.date.day == weekDay.day &&
+        transaction.date.month == weekDay.month &&
+        transaction.date.year == weekDay.year)
+    .fold(0.0, (sum, transaction) => sum + transaction.value);
 
       return {
         'day': DateFormat.E().format(weekDay)[0],
@@ -33,6 +28,15 @@ class Chart extends StatelessWidget {
     });
   }
 
+double get _weekTotalValue {
+    return groupedTransactions.fold(0.0, (sum, tr) {
+      return sum + (tr['value'] as double);
+    });
+}
+_percent(double value){
+  return (value/_weekTotalValue);
+}
+
   @override
   Widget build(BuildContext context) {
     groupedTransactions;
@@ -40,14 +44,16 @@ class Chart extends StatelessWidget {
       elevation: 6,
       margin: const EdgeInsets.all(20),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: groupedTransactions.map((tr) {
           return ChartBar(
             label: tr['day'] as String,
             value: tr['value'] as double,
-            percentage: 0.3,
+            percentage: _percent(tr['value'] as double),
           );
         }).toList(),
       ),
     );
   }
 }
+
