@@ -33,7 +33,7 @@ double get _weekTotalValue {
       return sum + (tr['value'] as double);
     });
 }
-_percent(double value){
+ _percent(double value){
   return (value/_weekTotalValue);
 }
 
