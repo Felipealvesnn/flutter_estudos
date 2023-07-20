@@ -1,68 +1,82 @@
+import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import './components/transaction_form.dart';
-import './components/transaction_list.dart';
+import 'components/transaction_form.dart';
+import 'components/transaction_list.dart';
 import 'components/chart.dart';
 import 'models/transaction.dart';
 
 main() => runApp(ExpensesApp());
 
 class ExpensesApp extends StatelessWidget {
+  ExpensesApp({Key? key}) : super(key: key);
+  final ThemeData tema = ThemeData();
+
   @override
   Widget build(BuildContext context) {
-    final ThemeData tema = ThemeData();
-
     return MaterialApp(
-      home: MyHomePage(),
+      home: const MyHomePage(),
       theme: tema.copyWith(
         colorScheme: tema.colorScheme.copyWith(
-          primary: Color.fromARGB(255, 183, 42, 208),
-          secondary: Color.fromARGB(255, 235, 190, 219),
+          primary: Colors.purple,
+          secondary: Colors.amber,
         ),
         textTheme: tema.textTheme.copyWith(
-          titleLarge: const TextStyle(
+          titleLarge : const TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 5, 5, 5),
+            color: Colors.black,
           ),
         ),
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
-            fontFamily: 'Quicksand',
+            fontFamily: 'OpenSans',
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 247, 245, 245),
           ),
         ),
-        
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    Transaction(id: 't0', title: 'title', value: 545, date: DateTime.now().subtract(Duration(days: 33))),
+    Transaction(
+      id: 't0',
+      title: 'Conta Antiga',
+      value: 400.00,
+      date: DateTime.now().subtract(const Duration(days: 33)),
+    ),
     Transaction(
       id: 't1',
       title: 'Novo Tênis de Corrida',
       value: 310.76,
-      date: DateTime.now().subtract(Duration(days: 3)),
+      date: DateTime.now().subtract(const Duration(days: 3)),
     ),
     Transaction(
       id: 't2',
       title: 'Conta de Luz',
       value: 211.30,
-      date: DateTime.now().subtract(Duration(days: 4)),
+      date: DateTime.now().subtract(const Duration(days: 4)),
     ),
-
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(
+        const Duration(days: 7),
+      ));
+    }).toList();
+  }
 
   _addTransaction(String title, double value) {
     final newTransaction = Transaction(
@@ -88,22 +102,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<Transaction>get _recentTransactions{
-    return _transactions.where((transaction) {
-      return transaction.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Despesas Pessoais',
-        ),
-        actions: <Widget>[
+        title: const Text('Despesas Pessoais'),
+        actions: [
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () => _openTransactionFormModal(context),
           ),
         ],
@@ -111,18 +117,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              child:  Chart(recentTransactions: _recentTransactions),
-              
-            ),
+          children: [
+            Chart(_recentTransactions),
             TransactionList(_transactions),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () => _openTransactionFormModal(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
