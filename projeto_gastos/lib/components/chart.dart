@@ -34,6 +34,9 @@ double get _weekTotalValue {
     });
 }
  _percent(double value){
+  if(_weekTotalValue == 0|| value == 0){
+    return 0.0;
+  }
   return (value/_weekTotalValue);
 }
 
