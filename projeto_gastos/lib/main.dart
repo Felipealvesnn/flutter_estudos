@@ -55,8 +55,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-  ];
+  final List<Transaction> _transactions = [];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -73,13 +72,18 @@ class _MyHomePageState extends State<MyHomePage> {
       value: value,
       date: date,
     );
-
     setState(() {
       _transactions.add(newTransaction);
     });
 
     Navigator.of(context).pop();
   }
+
+  _deletrTransaction(String id) {
+      setState(() {
+        _transactions.removeWhere((tr) => tr.id == id);
+      });
+    }
 
   _openTransactionFormModal(BuildContext context) {
     showModalBottomSheet(
@@ -94,10 +98,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Despesas Pessoais',
-        style: TextStyle(
-          color: Color.fromARGB(255, 255, 255, 255)
-        ),),
+        title: const Text(
+          'Despesas Pessoais',
+          style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -110,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_recentTransactions),
-            TransactionList(_transactions),
+            TransactionList(_transactions,_deletrTransaction),
           ],
         ),
       ),

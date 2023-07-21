@@ -6,16 +6,17 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final void Function(String) onRemove;
 
-  const TransactionList(this.transactions, {Key? key}) : super(key: key);
+  const TransactionList(this.transactions, this.onRemove, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 400,
       child: transactions.isEmpty
-          ?
-           Column(
+          ? Column(
               children: [
                 const SizedBox(height: 20),
                 Text(
@@ -43,26 +44,40 @@ class TransactionList extends StatelessWidget {
                     horizontal: 5,
                   ),
                   child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Padding(
-                        padding: const EdgeInsets.all(7),
-                        child: FittedBox(
-                          child: Text('R\$${tr.value}'),
+                      leading: CircleAvatar(
+                        radius: 30,
+                        child: Padding(
+                          padding: const EdgeInsets.all(7),
+                          child: FittedBox(
+                            child: Text('R\$${tr.value}'),
+                          ),
                         ),
                       ),
-                    ),
-                    title: Text(
-                      tr.title!,
-                      style: const TextStyle(
-                        // fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(0, 0, 0, 1)
-                      )
-                    ),
-                    subtitle: Text(
-                      DateFormat('d MMM y').format(tr.date!),
-                    ),
-                  ),
+                      title: Text(
+                          tr.title ??
+                              '', // Verifica se tr.title é nulo e, se for, usa uma string vazia.
+                          style: const TextStyle(
+                              color: Color.fromRGBO(0, 0, 0, 1))),
+                      trailing:
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                color: Theme.of(context).errorColor,
+                                onPressed: ()
+                                {},
+                              ),
+                                IconButton(
+                                icon: const Icon(Icons.delete),
+                                color: Theme.of(context).errorColor,
+                                onPressed: () => 
+                                onRemove(tr.id!),
+                              ),
+                            ],
+                          )
+                       
+                      ),
                 );
               },
             ),
