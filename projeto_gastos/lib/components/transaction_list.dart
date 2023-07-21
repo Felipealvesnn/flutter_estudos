@@ -64,13 +64,13 @@ class TransactionList extends StatelessWidget {
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.edit),
-                                color: Theme.of(context).errorColor,
+                                color: Color.fromRGBO(22, 28, 208, 1),
                                 onPressed: ()
                                 {},
                               ),
                                 IconButton(
                                 icon: const Icon(Icons.delete),
-                                color: Theme.of(context).errorColor,
+                                color: Theme.of(context).colorScheme.error,
                                 onPressed: () => 
                                 onRemove(tr.id!),
                               ),
