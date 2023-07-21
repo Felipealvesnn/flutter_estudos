@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double) onSubmit;
@@ -13,6 +14,7 @@ class _TransactionFormState extends State<TransactionForm> {
   final titleController = TextEditingController();
 
   final valueController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
 
   _submitForm() {
     final title = titleController.text;
@@ -23,6 +25,23 @@ class _TransactionFormState extends State<TransactionForm> {
     }
 
     widget.onSubmit(title, value);
+  }
+
+  showdatepicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2019),
+            lastDate: DateTime.now())
+        .then((value) {
+      if (value == null) {
+        return;
+      } else {
+        setState(() {
+          _selectedDate = value;
+        });
+      }
+    });
   }
 
   @override
@@ -49,11 +68,18 @@ class _TransactionFormState extends State<TransactionForm> {
                 labelText: 'Valor (R\$)',
               ),
             ),
+            SizedBox(height: 5),
             Container(
               height: 70,
               child: Row(
                 children: [
-                  Text("Nenhuma data selecionada!"),
+                  Expanded(
+                    child: _selectedDate == null
+                        ? Text("Nenhuma data selecionada!")
+                        : Text(
+                            'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}',
+                          ),
+                  ),
                   TextButton(
                     child: const Text(
                       'Selecionar data',
@@ -62,7 +88,7 @@ class _TransactionFormState extends State<TransactionForm> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onPressed: () => {},
+                    onPressed: showdatepicker,
                   ),
                 ],
               ),
