@@ -80,10 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _deletrTransaction(String id) {
-      setState(() {
-        _transactions.removeWhere((tr) => tr.id == id);
-      });
-    }
+    setState(() {
+      _transactions.removeWhere((tr) => tr.id == id);
+    });
+  }
 
   _openTransactionFormModal(BuildContext context) {
     showModalBottomSheet(
@@ -96,8 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    final appBar  = AppBar(
         title: const Text(
           'Despesas Pessoais',
           style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
@@ -108,13 +107,22 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () => _openTransactionFormModal(context),
           ),
         ],
-      ),
+      );
+    final availabelheight = MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(_recentTransactions),
-            TransactionList(_transactions,_deletrTransaction),
+            Container(
+              height: availabelheight * 0.3,
+              child: Chart(_recentTransactions),
+            ),
+            Container(
+                height: availabelheight * 0.7,
+                child: TransactionList(_transactions, _deletrTransaction)),
           ],
         ),
       ),
