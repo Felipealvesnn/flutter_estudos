@@ -1,5 +1,6 @@
 import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:math';
 import 'components/transaction_form.dart';
 import 'components/transaction_list.dart';
@@ -96,19 +97,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar  = AppBar(
-        title: const Text(
-          'Despesas Pessoais',
-          style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+    //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); se eu quiser q so funcione na horienteção retrato
+    final appBar = AppBar(
+      title:const Text(
+        'Despesas Pessoais',
+        style: TextStyle(
+          color: Color.fromARGB(255, 255, 255, 255),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => _openTransactionFormModal(context),
-          ),
-        ],
-      );
-    final availabelheight = MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+      ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () => _openTransactionFormModal(context),
+        ),
+      ],
+    );
+    final availabelheight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
 
     return Scaffold(
       appBar: appBar,
