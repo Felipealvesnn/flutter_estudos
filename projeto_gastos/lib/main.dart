@@ -1,8 +1,6 @@
 import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:math';
-import 'components/transaction_form.dart';
 import 'components/transaction_list.dart';
 import 'components/chart.dart';
 import 'models/transaction.dart';
@@ -23,17 +21,15 @@ class ExpensesApp extends StatelessWidget {
           secondary: Colors.amber,
         ),
         textTheme: tema.textTheme.copyWith(
-          titleLarge: const TextStyle(
+          titleLarge : const TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 252, 250, 250),
+            color: Colors.black,
           ),
-          labelLarge: TextStyle(
-            fontFamily: 'OpenSans',
-            fontSize: 18,
+          labelLarge : const TextStyle(
+            color: Colors.white,
             fontWeight: FontWeight.bold,
-            color: const Color.fromARGB(255, 250, 250, 250),
           ),
         ),
         appBarTheme: const AppBarTheme(
@@ -57,6 +53,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -73,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       value: value,
       date: date,
     );
+
     setState(() {
       _transactions.add(newTransaction);
     });
@@ -80,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop();
   }
 
-  _deletrTransaction(String id) {
+  _removeTransaction(String id) {
     setState(() {
       _transactions.removeWhere((tr) => tr.id == id);
     });
@@ -97,22 +95,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); se eu quiser q so funcione na horienteção retrato
+  bool isPaisagem =  MediaQuery.of(context).orientation
+     == Orientation.landscape;
     final appBar = AppBar(
-      title:const Text(
-        'Despesas Pessoais',
-        style: TextStyle(
-          color: Color.fromARGB(255, 255, 255, 255),
-        ),
-      ),
+      title: const Text('Despesas Pessoais'),
       actions: [
         IconButton(
           icon: const Icon(Icons.add),
           onPressed: () => _openTransactionFormModal(context),
         ),
+          if(isPaisagem)
+        IconButton(
+          icon:  Icon(_showChart ? Icons.list : Icons.bar_chart),
+          onPressed: () {
+            setState(() {
+              _showChart = !_showChart;
+            });
+          },
+        ),
       ],
     );
-    final availabelheight = MediaQuery.of(context).size.height -
+
+    final availableHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -
         MediaQuery.of(context).padding.top;
 
@@ -122,13 +126,31 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              height: availabelheight * 0.3,
-              child: Chart(_recentTransactions),
+            if(isPaisagem)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Exibir Gráfico'),
+                Switch(
+                  value: _showChart,
+                  onChanged: (value) {
+                    setState(() {
+                      _showChart = value;
+                    });
+                  },
+                ),
+              ],
             ),
-            Container(
-                height: availabelheight * 0.7,
-                child: TransactionList(_transactions, _deletrTransaction)),
+            if (_showChart || !isPaisagem)
+              SizedBox(
+                height: availableHeight * (isPaisagem? 0.7: 0.4),
+                child: Chart(_recentTransactions),
+              ),
+            if (!_showChart || !isPaisagem)
+              SizedBox(
+                height: availableHeight * (isPaisagem? 1:0.6),
+                child: TransactionList(_transactions, _removeTransaction),
+              ),
           ],
         ),
       ),
