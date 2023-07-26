@@ -22,6 +22,23 @@ class _TransactionFormState extends State<TransactionForm> {
     final value = double.tryParse(_valueController.text) ?? 0;
 
     if (title.isEmpty || value <= 0 || _selectedDate == null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Adicione um valor válido!'),
+          content: const Text('adicione um valor válido!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
       return;
     }
 
@@ -56,7 +73,7 @@ class _TransactionFormState extends State<TransactionForm> {
               ),
               AdaptativeDatePicker(
                 selectedDate: _selectedDate,
-                onDateChanged: (newDate) {
+                onDateChanged:  (newDate) {
                   setState(() {
                     _selectedDate = newDate;
                   });
