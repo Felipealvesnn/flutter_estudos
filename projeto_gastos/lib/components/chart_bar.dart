@@ -15,52 +15,50 @@ class ChartBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (ctx, constraint) {
+      builder: (ctx, constraints) {
         return Column(
           children: [
-            Container(
-              height: constraint.maxHeight * 0.15,
+            SizedBox(
+              height: constraints.maxHeight * 0.15,
               child: FittedBox(
-                child: Text('R\$${value!.toStringAsFixed(2)}'),
+                child: Text(value!.toStringAsFixed(2)),
               ),
             ),
-            SizedBox(height: constraint.maxHeight * 0.05),
+            SizedBox(height: constraints.maxHeight * 0.05),
             SizedBox(
-              height: constraint.maxHeight * 0.6,
+              height: constraints.maxHeight * 0.6,
               width: 10,
               child: Stack(
                 alignment: Alignment.bottomCenter,
-                children: [
+                children: <Widget>[
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.grey,
                         width: 1.0,
                       ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5),
-                      ),
                       color: const Color.fromRGBO(220, 220, 220, 1),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
                   FractionallySizedBox(
-                    heightFactor: percentage!,
+                    heightFactor: percentage,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(5),
-                        ),
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(5),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: constraint.maxHeight * 0.05),
+            SizedBox(height: constraints.maxHeight * 0.05),
             SizedBox(
-              height: constraint.maxHeight * 0.15,
-              child: FittedBox(child: Text(label!)),
+              height: constraints.maxHeight * 0.15,
+              child: FittedBox(
+                child: Text(label!),
+              ),
             ),
           ],
         );

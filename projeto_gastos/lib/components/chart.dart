@@ -14,35 +14,33 @@ class Chart extends StatelessWidget {
         Duration(days: index),
       );
 
-  double totalSum = recentTransaction
-    .where((transaction) =>
-        transaction.date.day == weekDay.day &&
-        transaction.date.month == weekDay.month &&
-        transaction.date.year == weekDay.year)
-    .fold(0.0, (sum, transaction) => sum + transaction.value);
+      double totalSum = 0.0;
+
+      for (var i = 0; i < recentTransaction.length; i++) {
+        bool sameDay = recentTransaction[i].date.day == weekDay.day;
+        bool sameMonth = recentTransaction[i].date.month == weekDay.month;
+        bool sameYear = recentTransaction[i].date.year == weekDay.year;
+
+        if (sameDay && sameMonth && sameYear) {
+          totalSum += recentTransaction[i].value;
+        }
+      }
 
       return {
-        'day': DateFormat.E().format(weekDay),
+        'day': DateFormat.E().format(weekDay)[0],
         'value': totalSum,
       };
     }).reversed.toList();
   }
 
-double get _weekTotalValue {
+  double get _weekTotalValue {
     return groupedTransactions.fold(0.0, (sum, tr) {
       return sum + (tr['value'] as double);
     });
-}
- _percent(double value){
-  if(_weekTotalValue == 0|| value == 0){
-    return 0.0;
   }
-  return (value/_weekTotalValue);
-}
 
   @override
   Widget build(BuildContext context) {
-    groupedTransactions;
     return Card(
       elevation: 6,
       margin: const EdgeInsets.all(20),
@@ -50,13 +48,15 @@ double get _weekTotalValue {
         padding: const EdgeInsets.all(10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: groupedTransactions.map((tr) {     
+          children: groupedTransactions.map((tr) {
             return Flexible(
               fit: FlexFit.tight,
               child: ChartBar(
                 label: tr['day'] as String,
                 value: tr['value'] as double,
-                percentage: _percent(tr['value'] as double),
+                percentage: _weekTotalValue == 0
+                    ? 0
+                    : (tr['value'] as double) / _weekTotalValue,
               ),
             );
           }).toList(),
@@ -65,4 +65,3 @@ double get _weekTotalValue {
     );
   }
 }
-
