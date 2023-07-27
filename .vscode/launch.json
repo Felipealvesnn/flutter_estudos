@@ -6,6 +6,12 @@
     "configurations": [
     
         {
+            "name": "snack_project",
+            "cwd": "snack_project",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
             "name": "projeto_gastos",
             "cwd": "projeto_gastos",
             "request": "launch",
