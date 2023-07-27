@@ -5,7 +5,7 @@ import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'components/transaction_form.dart';
+import 'components/charttes.dart';
 import 'components/transaction_list.dart';
 import 'components/chart.dart';
 import 'models/transaction.dart';
@@ -26,13 +26,13 @@ class ExpensesApp extends StatelessWidget {
           secondary: Colors.amber,
         ),
         textTheme: tema.textTheme.copyWith(
-          headline6: const TextStyle(
+          titleLarge: const TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
-          button: const TextStyle(
+          labelLarge: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -159,6 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //       ),
             //     ],
             //   ),
+            //MyWidget(),
             if (_showChart || !isLandscape)
               SizedBox(
                 height: availableHeight * (isLandscape ? 0.8 : 0.3),
