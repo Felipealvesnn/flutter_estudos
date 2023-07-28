@@ -77,7 +77,7 @@ class MealiTEM extends StatelessWidget {
                       const SizedBox(
                         width: 6,
                       ),
-                      Text(meal.complexity as String),
+                      Text('meal.complexity as String'),
                     ],
                   ),
                   Row(
@@ -86,7 +86,7 @@ class MealiTEM extends StatelessWidget {
                       const SizedBox(
                         width: 6,
                       ),
-                      Text(meal.cost as String),
+                      Text('meal.cost as String'),
                     ],
                   ),
                 ],
