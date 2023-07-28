@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../models/Meals.dart';
 import '../models/category.dart';
 import 'dummy_data.dart';
 
@@ -30,7 +31,7 @@ class DatabaseHelper {
 
     return openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE categories(
@@ -44,6 +45,25 @@ class DatabaseHelper {
         for (var category in dummyCategories) {
           await db.insert('categories', category.toMap());
         }
+        await db.execute('''
+        CREATE TABLE lanches(
+          id TEXT PRIMARY KEY,
+          title TEXT,
+          imageUrl TEXT,
+          ingredients TEXT,
+          steps TEXT,
+          duration INTEGER,
+          isGlutenFree INTEGER,
+          isLactoseFree INTEGER,
+          isVegan INTEGER,
+          isVegetarian INTEGER,
+          complexity TEXT,
+          cost TEXT
+        )
+      ''');
+      for (var lanches in dummyMeals) {
+          await db.insert('lanches', lanches.toMap());
+        }
       },
     );
   }
@@ -55,4 +75,12 @@ class DatabaseHelper {
       return Category.fromMap(maps[index]);
     });
   }
+  Future<List<Meal>> getMeals() async {
+  final db = await database;
+  final List<Map<String, dynamic>> maps = await db.query('lanches');
+  return List.generate(maps.length, (index) {
+    return Meal.fromMap(maps[index]);
+  });
+}
+
 }
