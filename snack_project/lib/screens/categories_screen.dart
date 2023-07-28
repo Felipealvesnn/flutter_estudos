@@ -12,6 +12,7 @@ class CategoriesScreen extends StatelessWidget {
         final db = DatabaseHelper();
     // Obtém a lista de categorias do banco de dados
     final List<Category> categories = await db.getCategories();
+     final  categoriesd = await db.getMeals();
     final wigne = categories.map((e) {
        return Category_item(e);
 
@@ -21,6 +22,7 @@ class CategoriesScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+  
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vamos Cozinhar?'),

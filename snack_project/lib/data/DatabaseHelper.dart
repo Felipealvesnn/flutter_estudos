@@ -31,7 +31,7 @@ class DatabaseHelper {
 
     return openDatabase(
       path,
-      version: 2,
+      version: 4,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE categories(
@@ -45,22 +45,24 @@ class DatabaseHelper {
         for (var category in dummyCategories) {
           await db.insert('categories', category.toMap());
         }
-        await db.execute('''
-        CREATE TABLE lanches(
-          id TEXT PRIMARY KEY,
-          title TEXT,
-          imageUrl TEXT,
-          ingredients TEXT,
-          steps TEXT,
-          duration INTEGER,
-          isGlutenFree INTEGER,
-          isLactoseFree INTEGER,
-          isVegan INTEGER,
-          isVegetarian INTEGER,
-          complexity TEXT,
-          cost TEXT
-        )
-      ''');
+      await db.execute('''
+  CREATE TABLE lanches(
+    id TEXT PRIMARY KEY,
+    title TEXT,
+    imageUrl TEXT,
+    categories TEXT, 
+    ingredients TEXT,
+    steps TEXT,
+    duration INTEGER,
+    isGlutenFree INTEGER,
+    isLactoseFree INTEGER,
+    isVegan INTEGER,
+    isVegetarian INTEGER,
+    complexity TEXT,
+    cost TEXT
+  )
+''');
+
       for (var lanches in dummyMeals) {
           await db.insert('lanches', lanches.toMap());
         }
