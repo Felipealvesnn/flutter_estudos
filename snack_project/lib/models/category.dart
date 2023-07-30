@@ -5,25 +5,9 @@ class Category {
   final String title;
   final Color color;
 
-  Category({
+  const Category({
     required this.id,
     required this.title,
-    required this.color,
+    this.color = Colors.orange,
   });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'title': title,
-      'color': color.value, // Salvar o valor do color como inteiro no banco de dados
-    };
-  }
-
-  factory Category.fromMap(Map<String, dynamic> map) {
-    return Category(
-      id: map['id'],
-      title: map['title'],
-      color: Color(map['color']), // Converter o inteiro de volta para Color
-    );
-  }
 }

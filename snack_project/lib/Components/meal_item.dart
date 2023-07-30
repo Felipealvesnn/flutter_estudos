@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import '../models/meal.dart';
 
-import '../models/Meals.dart';
-
-class MealiTEM extends StatelessWidget {
+class MealItem extends StatelessWidget {
   final Meal meal;
-  void selectMeal() {}
-  const MealiTEM(this.meal, {super.key});
+
+  const MealItem(this.meal, {Key? key}) : super(key: key);
+
+  void _selectMeal() {}
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: selectMeal,
+      onTap: _selectMeal,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
-        )
-        ,
+        ),
         elevation: 4,
         margin: const EdgeInsets.all(10),
         child: Column(
@@ -54,7 +54,7 @@ class MealiTEM extends StatelessWidget {
                       overflow: TextOverflow.fade,
                     ),
                   ),
-                )
+                ),
               ],
             ),
             Padding(
@@ -65,33 +65,27 @@ class MealiTEM extends StatelessWidget {
                   Row(
                     children: [
                       const Icon(Icons.schedule),
-                      const SizedBox(
-                        width: 6,
-                      ),
+                      const SizedBox(width: 6),
                       Text('${meal.duration} min'),
                     ],
                   ),
                   Row(
                     children: [
                       const Icon(Icons.work),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Text('meal.complexity as String'),
+                      const SizedBox(width: 6),
+                      Text(meal.complexityText),
                     ],
                   ),
                   Row(
                     children: [
                       const Icon(Icons.attach_money),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      Text('meal.cost as String'),
+                      const SizedBox(width: 6),
+                      Text(meal.costText),
                     ],
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
