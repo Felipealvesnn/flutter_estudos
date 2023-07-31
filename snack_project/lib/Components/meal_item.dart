@@ -7,23 +7,39 @@ class MealItem extends StatelessWidget {
 
   const MealItem(this.meal, {Key? key}) : super(key: key);
 
-   _selectMeal(BuildContext context) {
-    Navigator.of(context).pushNamed(
+  _selectMeal(BuildContext context) {
+    Navigator.of(context)
+        .pushNamed(
       AppRoutes.carneDEtails,
       arguments: meal,
-    ).then((value) {
- if(value == null){
-    print('Sem resultado');
- }else{
-      print(value);
- }
+    )
+        .then((value) {
+      if (value == null) {
+        print('Sem resultado');
+      } else {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('Resultado'),
+            content: Text('O valor retornado foi: $value'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop(); // Fechar o alerta
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=>_selectMeal(context),
+      onTap: () => _selectMeal(context),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
