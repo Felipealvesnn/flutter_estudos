@@ -30,12 +30,12 @@ class Main_drawer extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             alignment: Alignment.bottomRight,
-            child: Text(
+            child: const Text(
               'Vamos Cozinhar?',
               style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 30,
-                color: Theme.of(context).primaryColor,
+                color: Color.fromRGBO(254, 254, 254, 1),
               ),
             ),
           ),
@@ -57,4 +57,4 @@ class Main_drawer extends StatelessWidget {
       ),
     );
   }
-  }
+}
