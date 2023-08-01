@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:meals/screens/carne_details.dart';
 import 'package:meals/screens/settins_screens.dart';
 import 'package:meals/screens/tabs_screen.dart';
+import 'data/dummy_data.dart';
+import 'models/meal.dart';
+import 'models/settings.dart';
 import 'screens/categories_screen.dart';
 import 'screens/categories_meals_screen.dart';
 import 'utils/app_routes.dart';
@@ -10,8 +13,40 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+List<Meal> _availableMeals = dummyMeals;
+List<Meal> _comidasFavoritas = [];
+var settingds = Settings();
+void _filterMeals(Settings settings) {
+  setState(() {
+    this.settingds = settings;
+    _availableMeals = dummyMeals.where((meal) {
+      return (!settings.isGlutenFree || meal.isGlutenFree) &&
+          (!settings.isLactoseFree || meal.isLactoseFree) &&
+          (!settings.isVegan || meal.isVegan) &&
+          (!settings.isVegetarian || meal.isVegetarian);
+    }).toList();
+  });
+}
+
+void _toggleFavorite(Meal meal){
+  setState(() {
+    _comidasFavoritas.contains(meal) ? _comidasFavoritas.remove(meal) : _comidasFavoritas.add(meal);
+  });
+}
+
+bool _isFavorite(Meal meal){
+ 
+  return  _comidasFavoritas.contains(meal);
+  
+}
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +67,10 @@ class MyApp extends StatelessWidget {
             ),
       ),
       routes: {
-        AppRoutes.home: (ctx) => const Tabs_screen(),
-        AppRoutes.categoriesMeals: (ctx) => const CategoriesMealsScreen(),
-        AppRoutes.settings: (ctx) => const Settins_screens(),
-        AppRoutes.carneDEtails: (ctx) => const CarneDetails(),
+        AppRoutes.home: (ctx) =>  Tabs_screen(_comidasFavoritas),
+        AppRoutes.categoriesMeals: (ctx) =>  CategoriesMealsScreen( availableMeals:_availableMeals,),
+        AppRoutes.settings: (ctx) =>  Settins_screens(_filterMeals,settingds),
+        AppRoutes.carneDEtails: (ctx) =>  CarneDetails(_toggleFavorite, _isFavorite),
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/alguma-coisa') {

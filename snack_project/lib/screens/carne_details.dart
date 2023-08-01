@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../models/meal.dart';
 
 class CarneDetails extends StatelessWidget {
-  const CarneDetails({super.key});
+  const CarneDetails(this.onToggleFavorite,this.favoritoOn, {Key? key}) : super(key: key);
+  final Function(Meal) onToggleFavorite;
+  final bool Function(Meal) favoritoOn;
 
   _createSectionTitle(BuildContext context, String title) {
     return Container(
@@ -85,9 +87,11 @@ class CarneDetails extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.star),
+        child: Icon( favoritoOn(carne)? Icons.star : Icons.star_border,
+      ),
         onPressed: () {
-          Navigator.of(context).pop(carne.title);
+         onToggleFavorite(carne);
+         Navigator.of(context).pop();
         },
       )
     );
