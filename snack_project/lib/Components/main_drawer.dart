@@ -51,7 +51,7 @@ class Main_drawer extends StatelessWidget {
           _createItem(
             Icons.settings,
             'Configurações',
-            () => Navigator.of(context).pushReplacementNamed('/settings'),
+            () => Navigator.of(context).pushReplacementNamed(AppRoutes.settings),
           ),
         ],
       ),
