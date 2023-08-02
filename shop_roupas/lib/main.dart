@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shop_roupas/pages/product_details.dart';
 import 'package:shop_roupas/pages/products_overview.dart';
+import 'package:shop_roupas/utils/app_routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,19 +16,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color.fromARGB(255, 99, 28, 222)),
-        useMaterial3: true,
-        primarySwatch: Colors.purple,
-        buttonTheme: ButtonThemeData(
-         // colorScheme: Color.fromARGB(255, 213, 15, 41),
-          buttonColor: Color.fromARGB(255, 213, 15, 41),
-          textTheme: ButtonTextTheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+        primary:  Colors.red,
+        secondary: Colors.deepOrange,
         ),
+        appBarTheme:const AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 106, 10, 127),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.black),
+        
+        ),
+        fontFamily: 'Lato',
       ),
+      routes: {
+      //  '/': (ctx) => Products_overview(),
+        App_routes.product_details: (ctx) => Product_details(),
+      },
       home: Products_overview(),
       debugShowCheckedModeBanner: false,
     );
