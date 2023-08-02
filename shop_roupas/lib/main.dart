@@ -29,10 +29,10 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Lato',
       ),
       routes: {
-      //  '/': (ctx) => Products_overview(),
+        '/': (ctx) => Products_overview(),
         App_routes.product_details: (ctx) => Product_details(),
       },
-      home: Products_overview(),
+     // home: Products_overview(),
       debugShowCheckedModeBanner: false,
     );
   }
