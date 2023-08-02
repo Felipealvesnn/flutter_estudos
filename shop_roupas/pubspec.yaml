@@ -1,5 +1,5 @@
 name: shop_roupas
-description: Um projeto sobre um app de loja de roupas e-commecer.
+description: Um projeto sobre um app de loja de roupas e-commecer que vou estudar o gerenciamento de estado.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
