@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_roupas/models/cart.dart';
 
 import '../components/Product_grid.dart';
+import '../components/count_cart.dart';
 import '../models/product.dart';
 import '../models/product_list.dart';
 
@@ -15,18 +17,30 @@ class Products_overview extends StatefulWidget {
 }
 
 class _Products_overviewState extends State<Products_overview> {
- bool _showFavoriteOnly = false;
+  bool _showFavoriteOnly = false;
 
   @override
   Widget build(BuildContext context) {
-    final Product_list product = Provider.of<Product_list>(context, listen: true);
+    final Product_list product =
+        Provider.of<Product_list>(context, listen: true);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme:
-        IconThemeData(color: const Color.fromARGB(255, 245, 245, 245)),
+            IconThemeData(color: const Color.fromARGB(255, 245, 245, 245)),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: const Text('Shop Roupas'),
         actions: [
+          Consumer<Cart>(
+            child: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.shopping_cart),
+              ),
+            builder: (context, value, filho) => Count_cart(
+              value: value.itemCount,
+              child: filho!
+            ),
+          ),
           PopupMenuButton(
             icon: const Icon(Icons.more_vert),
             itemBuilder: (_) {
@@ -34,11 +48,10 @@ class _Products_overviewState extends State<Products_overview> {
                 PopupMenuItem(
                   child: Text('Favoritos'),
                   value: FilterOptions.Favorites,
-                   onTap: () {
+                  onTap: () {
                     setState(() {
                       _showFavoriteOnly = false;
                     });
-                   
                   },
                 ),
                 PopupMenuItem(
@@ -48,7 +61,6 @@ class _Products_overviewState extends State<Products_overview> {
                     setState(() {
                       _showFavoriteOnly = true;
                     });
-                              
                   },
                 ),
               ];
@@ -56,7 +68,7 @@ class _Products_overviewState extends State<Products_overview> {
             onSelected: (FilterOptions value) {
               print(value);
             },
-          )
+          ),
         ],
       ),
       drawer: const Drawer(
