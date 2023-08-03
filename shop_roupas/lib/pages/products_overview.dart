@@ -14,6 +14,14 @@ class Products_overview extends StatelessWidget {
             IconThemeData(color: const Color.fromARGB(255, 245, 245, 245)),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: const Text('Shop Roupas'),
+        actions: [
+          PopupMenuButton(itemBuilder: (_){
+            return [
+              PopupMenuItem(child: Text('Favoritos'), value: 0,),
+              PopupMenuItem(child: Text('Todos'), value: 1,),
+            ];
+          })
+        ],
       ),
       drawer: const Drawer(
         backgroundColor: Colors.white,

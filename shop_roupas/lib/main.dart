@@ -3,19 +3,40 @@ import 'package:provider/provider.dart';
 import 'package:shop_roupas/pages/product_details.dart';
 import 'package:shop_roupas/pages/products_overview.dart';
 import 'package:shop_roupas/utils/app_routes.dart';
+import 'package:http/http.dart' as http;
+
 
 import 'models/product_list.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+//funcao para testar http
+  void fetchData() async {
+  String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+  
+  try {
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      // Request successful, handle the response
+      print(response.body);
+    } else {
+      // Request failed with an error status code
+      print('Request failed with status: ${response.statusCode}');
+    }
+  } catch (e) {
+    // An error occurred while making the request
+    print('Error: $e');
+  }
+}
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+   
     return ChangeNotifierProvider(
       create:(ctx) => Product_list(),
       child: MaterialApp(

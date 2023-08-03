@@ -6,17 +6,21 @@ import '../models/product.dart';
 import '../models/product_list.dart';
 
 class Product_grid extends StatelessWidget {
+  const Product_grid({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    // ignore: non_constant_identifier_names
     final Providers = Provider.of<Product_list>(context);
+    
     final List<Product> loadedProducts = Providers.list;
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
       itemCount: loadedProducts.length,
       itemBuilder: (ctx, i) => Container(
         child: Center(
-          child: ChangeNotifierProvider(
-            create: (ctx) => loadedProducts[i],
+          child: ChangeNotifierProvider.value(
+            value: loadedProducts[i],
             child: Product_item(),
           ),
         ),
