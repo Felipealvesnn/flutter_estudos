@@ -15,8 +15,8 @@ class Product_grid extends StatelessWidget {
     final Providers = Provider.of<Product_list>(context);
     
     final List<Product> loadedProducts = _showFavoriteOnly?
-     Providers.list:Providers.favoriteItems ;
-     
+      Providers.favoriteItems : Providers.list ;
+
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
       itemCount: loadedProducts.length,

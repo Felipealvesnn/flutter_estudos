@@ -23,7 +23,7 @@ class _Products_overviewState extends State<Products_overview> {
     return Scaffold(
       appBar: AppBar(
         iconTheme:
-            IconThemeData(color: const Color.fromARGB(255, 245, 245, 245)),
+        IconThemeData(color: const Color.fromARGB(255, 245, 245, 245)),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: const Text('Shop Roupas'),
         actions: [

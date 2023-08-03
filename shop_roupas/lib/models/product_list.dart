@@ -4,7 +4,7 @@ import 'package:shop_roupas/models/product.dart';
 
 class Product_list with ChangeNotifier {
   List<Product> _list = dummyProducts;
-  bool _showFavoriteOnly = false;
+
 
  
 
@@ -25,6 +25,7 @@ class Product_list with ChangeNotifier {
 
 
   // void showFavoriteOnly() {
+    //  bool _showFavoriteOnly = false;
   //   _showFavoriteOnly = true;
   //   notifyListeners();
   // }

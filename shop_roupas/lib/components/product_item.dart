@@ -14,7 +14,8 @@ class Product_item extends StatelessWidget {
     final Product product = Provider.of<Product>(context, listen: true);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
-      child: GestureDetector(
+      child:
+       GestureDetector(
         onTap: () {
           Navigator.of(context).pushNamed(
             App_routes.product_details,
