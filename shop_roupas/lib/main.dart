@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_roupas/pages/cart_page.dart';
 import 'package:shop_roupas/pages/orders_pages.dart';
 import 'package:shop_roupas/pages/product_details.dart';
+import 'package:shop_roupas/pages/product_pages.dart';
 import 'package:shop_roupas/pages/products_overview.dart';
 import 'package:shop_roupas/utils/app_routes.dart';
 import 'package:http/http.dart' as http;
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(
             backgroundColor: Color.fromARGB(255, 106, 10, 127),
             elevation: 0,
-            iconTheme: IconThemeData(color: Colors.black),
+            iconTheme: IconThemeData(color: Color.fromARGB(255, 251, 251, 251)),
           ),
           fontFamily: 'Lato',
         ),
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
           App_routes.product_details: (ctx) => Product_details(),
           App_routes.Carrinho: (ctx) => Cart_page(),
           App_routes.Orders: (ctx) => Orders_page(),
+          App_routes.product_pages: (ctx) => product_pages(),
         },
         // home: Products_overview(),
         debugShowCheckedModeBanner: false,

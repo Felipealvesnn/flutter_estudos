@@ -3,4 +3,5 @@ class App_routes{
   static const String product_details = '/product_details';
   static const String Carrinho = '/carrinho';
   static const String Orders = '/Orders';
+  static const String product_pages = '/product_pages';
 }

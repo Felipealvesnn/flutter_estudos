@@ -31,6 +31,14 @@ class Drwaer_arquivo extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed(App_routes.Orders);
             },
           ),
+          Divider(),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text('Produtos'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(App_routes.product_pages);
+            },
+          ),
         ],
       ),
     );
