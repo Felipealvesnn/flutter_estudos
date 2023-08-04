@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_roupas/models/order_pedidos.dart';
 
 import '../components/cart_item.dart';
 import '../models/cart.dart';
@@ -43,7 +44,11 @@ class Cart_page extends StatelessWidget {
                     ),
                     const Spacer(),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<Order_list>(context, listen: false)
+                            .addOrder(cart);
+                        cart.clear();
+                      },
                       child: Text('COMPRAR'),
                     )
                   ]),

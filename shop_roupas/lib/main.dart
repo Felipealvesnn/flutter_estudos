@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_roupas/pages/cart_page.dart';
+import 'package:shop_roupas/pages/orders_pages.dart';
 import 'package:shop_roupas/pages/product_details.dart';
 import 'package:shop_roupas/pages/products_overview.dart';
 import 'package:shop_roupas/utils/app_routes.dart';
 import 'package:http/http.dart' as http;
 
 import 'models/cart.dart';
+import 'models/order_pedidos.dart';
 import 'models/product_list.dart';
 
 void main() {
@@ -45,6 +47,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
         ),
+        ChangeNotifierProvider(
+          create: (ctx) => Order_list(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -61,9 +66,10 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Lato',
         ),
         routes: {
-          '/': (ctx) => Products_overview(),
+          App_routes.home: (ctx) => Products_overview(),
           App_routes.product_details: (ctx) => Product_details(),
           App_routes.Carrinho: (ctx) => Cart_page(),
+          App_routes.Orders: (ctx) => Orders_page(),
         },
         // home: Products_overview(),
         debugShowCheckedModeBanner: false,

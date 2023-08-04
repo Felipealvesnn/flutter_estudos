@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_roupas/models/cart.dart';
 
+import '../components/Drawer.dart';
 import '../components/Product_grid.dart';
 import '../components/count_cart.dart';
 import '../utils/app_routes.dart';
@@ -71,9 +72,7 @@ class _Products_overviewState extends State<Products_overview> {
           ),
         ],
       ),
-      drawer: const Drawer(
-        backgroundColor: Colors.white,
-      ),
+      drawer: Drwaer_arquivo(),
       body: Product_grid(_showFavoriteOnly),
     );
   }
