@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_roupas/models/order_pedidos.dart';
 
-import '../components/cart_item.dart';
+import '../components/Cart_item_widget.dart';
 import '../models/cart.dart';
 import '../models/product_list.dart';
 
