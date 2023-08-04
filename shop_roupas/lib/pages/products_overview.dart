@@ -31,7 +31,8 @@ class _Products_overviewState extends State<Products_overview> {
           Consumer<Cart>(
             child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(App_routes.Carrinho);
+                  Navigator.of(context).pushNamed(App_routes.Carrinho
+                  );
                 },
                 icon: Icon(Icons.shopping_cart),
               ),
