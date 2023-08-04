@@ -4,8 +4,7 @@ import 'package:shop_roupas/models/cart.dart';
 
 import '../components/Product_grid.dart';
 import '../components/count_cart.dart';
-import '../models/product.dart';
-import '../models/product_list.dart';
+import '../utils/app_routes.dart';
 
 enum FilterOptions { Favorites, All }
 
@@ -21,8 +20,6 @@ class _Products_overviewState extends State<Products_overview> {
 
   @override
   Widget build(BuildContext context) {
-    final Product_list product =
-        Provider.of<Product_list>(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +30,9 @@ class _Products_overviewState extends State<Products_overview> {
         actions: [
           Consumer<Cart>(
             child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(App_routes.Carrinho);
+                },
                 icon: Icon(Icons.shopping_cart),
               ),
             builder: (context, value, filho) => Count_cart(
