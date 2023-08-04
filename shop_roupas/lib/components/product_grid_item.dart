@@ -5,7 +5,7 @@ import 'package:shop_roupas/models/product.dart';
 
 import '../utils/app_routes.dart';
 
-class Product_item extends StatelessWidget {
+class product_grid_item extends StatelessWidget {
   _icns(Product product) {
     return product.isFavorite ? Icons.favorite : Icons.favorite_border;
   }
@@ -16,8 +16,7 @@ class Product_item extends StatelessWidget {
     final Cart cart = Provider.of<Cart>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
-      child:
-       GestureDetector(
+      child: GestureDetector(
         onTap: () {
           Navigator.of(context).pushNamed(
             App_routes.product_details,
@@ -40,15 +39,25 @@ class Product_item extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              title: Text(
-                product.title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color.fromRGBO(252, 252, 252, 1),
-                )
-              ),
+              title: Text(product.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromRGBO(252, 252, 252, 1),
+                  )),
               trailing: IconButton(
                 onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Produto adicionado com sucesso!'),
+                      duration: Duration(seconds: 2),
+                      action: SnackBarAction(
+                        label: 'Desfazer',
+                        onPressed: () {
+                          cart.diminuiItem(product.id);
+                        },
+                      ),
+                    ),
+                  );
                   cart.addItem(product);
                 },
                 icon: Icon(Icons.shopping_cart,
