@@ -1,3 +1,5 @@
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_roupas/models/product_list.dart';
@@ -24,7 +26,12 @@ class product_pages extends StatelessWidget {
           child:ListView.builder(
             itemCount: produts.itemsCount,
             itemBuilder:(context, index) => 
-            Product_item(produts.list[index]),
+            Column(
+              children: [
+                Product_item(produts.list[index]),
+                const Divider()
+              ],
+            ),
              ) ,
       ),
       )
