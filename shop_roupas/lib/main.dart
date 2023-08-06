@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_roupas/pages/cart_page.dart';
 import 'package:shop_roupas/pages/orders_pages.dart';
 import 'package:shop_roupas/pages/product_details.dart';
+import 'package:shop_roupas/pages/product_form.dart';
 import 'package:shop_roupas/pages/product_pages.dart';
 import 'package:shop_roupas/pages/products_overview.dart';
 import 'package:shop_roupas/utils/app_routes.dart';
@@ -72,6 +73,7 @@ class MyApp extends StatelessWidget {
           App_routes.Carrinho: (ctx) => Cart_page(),
           App_routes.Orders: (ctx) => Orders_page(),
           App_routes.product_pages: (ctx) => product_pages(),
+          App_routes.product_form: (ctx) => Product_form(),
         },
         // home: Products_overview(),
         debugShowCheckedModeBanner: false,
