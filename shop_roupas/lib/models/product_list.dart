@@ -23,7 +23,7 @@ class Product_list with ChangeNotifier {
     return _list.length;
   }
 
-  void addProductFromdata(Map<String, Object> data) {
+  Future<void> addProductFromdata(Map<String, Object> data) {
     bool hasId = data.containsKey('id');
     final newProduct = Product(
         id: hasId ? data['id'] as String : Random().nextDouble().toString(),
@@ -32,13 +32,13 @@ class Product_list with ChangeNotifier {
         price: data['price'],
         imageUrl: data['imageUrl']);
     if (hasId) {
-      _updateProduct(newProduct);
+      return _updateProduct(newProduct);
     } else {
-      addProduct(newProduct);
+      return addProduct(newProduct);
     }
   }
 
-  _updateProduct(Product product) {
+  Future<void> _updateProduct(Product product) {
     if (product != null && product.id != null) {
       final index = _list.indexWhere((prod) => prod.id == product.id);
       if (index >= 0) {
@@ -46,20 +46,20 @@ class Product_list with ChangeNotifier {
         notifyListeners();
       }
     }
+    return Future.value();
   }
 
-  void addProduct(Product product) {
-    http
-        .post(Uri.parse('$_baseUrl/products.json'),
-            body: json.encode({
-              'title': product.title,
-              'description': product.description,
-              'price': product.price,
-              'imageUrl': product.imageUrl,
-              'isFavorite': product.isFavorite,
-            }))
-        .then((value) {
-          final id = json.decode(value.body)['name'];
+  Future<void> addProduct(Product product) {
+    final future = http.post(Uri.parse('$_baseUrl/products.json'),
+        body: json.encode({
+          'title': product.title,
+          'description': product.description,
+          'price': product.price,
+          'imageUrl': product.imageUrl,
+          'isFavorite': product.isFavorite,
+        }));
+    return future.then<void>((value) {
+      final id = json.decode(value.body)['name'];
       _list.add(Product(
         id: id,
         title: product.title,
@@ -68,9 +68,8 @@ class Product_list with ChangeNotifier {
         imageUrl: product.imageUrl,
         isFavorite: product.isFavorite,
       ));
+      notifyListeners();
     });
-
-    notifyListeners();
   }
 
   void removeProduct(Product product) {
