@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:shop_roupas/models/cart.dart';
 import 'package:shop_roupas/models/cart_item.dart';
 
-import '../models/product.dart';
 import '../models/product_list.dart';
 
 class Cart_item_widget extends StatelessWidget {

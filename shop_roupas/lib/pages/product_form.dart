@@ -2,7 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_roupas/models/product.dart';
+
+import '../models/product_list.dart';
 
 class Product_form extends StatefulWidget {
   const Product_form({super.key});
@@ -30,6 +33,23 @@ class _Product_formState extends State<Product_form> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if (_formData.isEmpty) {
+      final product = ModalRoute.of(context)?.settings.arguments as Product?;
+      if (product != null) {
+        _formData['id'] = product.id;
+        _formData['title'] = product.title;
+        _formData['desciption'] = product.description;
+        _formData['price'] = product.price;
+        _formData['imageUrl'] = product.imageUrl;
+        _imageUrlController.text = product.imageUrl;
+      }
+    }
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -41,18 +61,15 @@ class _Product_formState extends State<Product_form> {
   }
 
   void _saveForm() {
-   final isvalid = _formakay.currentState?.validate()?? false;
-   if(!isvalid){
-    return;
-   }
-      _formakay.currentState?.save();
+    final isvalid = _formakay.currentState?.validate() ?? false;
+    if (!isvalid) {
+      return;
+    }
+    _formakay.currentState?.save();
 
-    final newProduct = Product(
-        id: Random().nextDouble().toString(),
-        title: _formData['title'],
-        description: _formData['desciption'],
-        price: _formData['price'],
-        imageUrl: _formData['imageUrl']);
+    Provider.of<Product_list>(context, listen: false)
+        .addProductFromdata(_formData);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -76,6 +93,7 @@ class _Product_formState extends State<Product_form> {
           child: ListView(
             children: [
               TextFormField(
+                initialValue: _formData['title'] as String?,
                 decoration: const InputDecoration(labelText: 'Titulo'),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
@@ -96,6 +114,9 @@ class _Product_formState extends State<Product_form> {
                 },
               ),
               TextFormField(
+                initialValue: _formData['price'] == null
+                    ? ''
+                    : _formData['price'].toString(),
                 onSaved: (newValue) {
                   _formData['price'] = double.parse(newValue ?? '0');
                 },
@@ -118,11 +139,14 @@ class _Product_formState extends State<Product_form> {
                 },
                 focusNode: _priceFocusNode,
                 inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly
-                ], // Use o formatter para permitir apenas dígitos
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$'))
+                ],
+
+                // Use o formatter para permitir apenas dígitos
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
               ),
               TextFormField(
+                initialValue: _formData['desciption'] as String?,
                 onSaved: (newValue) {
                   _formData['desciption'] = newValue ?? '';
                 },
@@ -175,17 +199,28 @@ class _Product_formState extends State<Product_form> {
                       },
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'URL invalida';
+                          return 'URL inválida';
                         }
+
+                        if (value
+                            .trim()
+                            .startsWith('data:image/jpeg;base64,')) {
+                          // Handle base64 image format here
+                          return null; // Or return an error message if necessary
+                        }
+
                         if (!value.trim().startsWith('http') &&
                             !value.trim().startsWith('https')) {
-                          return 'URL invalida';
+                          return 'URL inválida';
                         }
+
                         if (!value.trim().endsWith('.png') &&
                             !value.trim().endsWith('.jpg') &&
+                            !value.trim().endsWith('==') &&
                             !value.trim().endsWith('.jpeg')) {
-                          return 'URL invalida';
+                          return 'URL inválida';
                         }
+
                         return null;
                       },
                       controller: _imageUrlController,
