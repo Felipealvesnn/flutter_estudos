@@ -6,7 +6,6 @@ import 'package:shop_roupas/models/product_list.dart';
 
 import '../components/Drawer.dart';
 import '../components/product_item.dart';
-import '../models/cart.dart';
 import '../utils/app_routes.dart';
 
 class product_pages extends StatelessWidget {
