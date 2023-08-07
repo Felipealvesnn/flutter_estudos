@@ -20,6 +20,7 @@ void main() {
 class MyApp extends StatelessWidget {
 //funcao para testar http
   void fetchData() async {
+
     String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 
     try {
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
       print('Error: $e');
     }
   }
-
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

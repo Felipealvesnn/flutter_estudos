@@ -51,7 +51,7 @@ class _Products_overviewState extends State<Products_overview> {
                   value: FilterOptions.Favorites,
                   onTap: () {
                     setState(() {
-                      _showFavoriteOnly = false;
+                      _showFavoriteOnly = true;
                     });
                   },
                 ),
@@ -60,7 +60,7 @@ class _Products_overviewState extends State<Products_overview> {
                   value: FilterOptions.All,
                   onTap: () {
                     setState(() {
-                      _showFavoriteOnly = true;
+                      _showFavoriteOnly = false;
                     });
                   },
                 ),

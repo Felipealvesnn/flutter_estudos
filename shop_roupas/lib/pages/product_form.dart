@@ -187,10 +187,14 @@ class _Product_formState extends State<Product_form> {
                     alignment: Alignment.center,
                     child: _imageUrlController.text.isEmpty
                         ? const Text('Nenhuma imagem!')
-                        : FittedBox(
-                            child: Image.network(_imageUrlController.text),
-                            fit: BoxFit.cover,
-                          ),
+                        : Container(
+                          height: 100,
+                          width: 100,
+                          child: FittedBox(
+                              child: Image.network(_imageUrlController.text),
+                              fit: BoxFit.contain,
+                            ),
+                        ),
                   ),
                   Expanded(
                     child: TextFormField(
