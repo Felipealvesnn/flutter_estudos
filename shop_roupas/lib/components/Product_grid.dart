@@ -13,27 +13,29 @@ class Product_grid extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: non_constant_identifier_names
     final Providers = Provider.of<Product_list>(context);
-    
-    final List<Product> loadedProducts = _showFavoriteOnly?
-      Providers.favoriteItems : Providers.list ;
- 
-    return GridView.builder(
-      padding: const EdgeInsets.all(10.0),
-      itemCount: loadedProducts.length,
-      itemBuilder: (ctx, i) => Container(
-        child: Center(
-          child: ChangeNotifierProvider.value(
-            value: loadedProducts[i],
-            child: product_grid_item(),
-          ),
-        ),
-      ),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3 / 2,
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
-      ),
-    );
+
+    final List<Product> loadedProducts =
+        _showFavoriteOnly ? Providers.favoriteItems : Providers.list;
+
+    return loadedProducts.length == 0
+        ? Center(child: Text('Nenhum produto cadastrado!'))
+        : GridView.builder(
+            padding: const EdgeInsets.all(10.0),
+            itemCount: loadedProducts.length,
+            itemBuilder: (ctx, i) => Container(
+              child: Center(
+                child: ChangeNotifierProvider.value(
+                  value: loadedProducts[i],
+                  child: product_grid_item(),
+                ),
+              ),
+            ),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 3 / 2,
+              crossAxisSpacing: 10.0,
+              mainAxisSpacing: 10.0,
+            ),
+          );
   }
 }

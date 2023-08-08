@@ -20,6 +20,7 @@ class Products_overview extends StatefulWidget {
 class _Products_overviewState extends State<Products_overview> {
   bool _showFavoriteOnly = false;
   bool _isloading = true;
+  bool _iserro = false;
 
   Future<void> _refreshProducts(BuildContext context) {
     return Provider.of<Product_list>(context, listen: false).getProducts();
@@ -29,13 +30,22 @@ class _Products_overviewState extends State<Products_overview> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<Product_list>(context, listen: false)
-        .getProducts()
-        .then((value) {
-      setState(() {
-        _isloading = false;
+    try {
+      Provider.of<Product_list>(context, listen: false)
+          .getProducts()
+          .catchError((error) {
+        setState(() {
+          _isloading = false;
+          _iserro = true;
+        });
+      }).then((value) {
+        setState(() {
+          _isloading = false;
+        });
       });
-    });
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -88,13 +98,16 @@ class _Products_overviewState extends State<Products_overview> {
         ],
       ),
       drawer: Drwaer_arquivo(),
-      body: _isloading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : RefreshIndicator( //esse resfresh é para atualizar a pagina
-              onRefresh: () => _refreshProducts(context),
-              child: Product_grid(_showFavoriteOnly)),
+      body: _iserro
+          ? Center(child: Text('Error'))
+          : (_isloading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : RefreshIndicator(
+                  //esse resfresh é para atualizar a pagina
+                  onRefresh: () => _refreshProducts(context),
+                  child: Product_grid(_showFavoriteOnly))),
     );
   }
 }
