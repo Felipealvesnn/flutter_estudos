@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
           App_routes.home: (ctx) => Products_overview(),
           App_routes.product_details: (ctx) => Product_details(),
           App_routes.Carrinho: (ctx) => Cart_page(),
-          App_routes.Orders: (ctx) => Orders_page(),
+          App_routes.Orders: (ctx) => orders_pages(),
           App_routes.product_pages: (ctx) => product_pages(),
           App_routes.product_form: (ctx) => Product_form(),
         },

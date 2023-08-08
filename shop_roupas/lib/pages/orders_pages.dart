@@ -5,22 +5,35 @@ import 'package:shop_roupas/models/order_pedidos.dart';
 import '../components/Drawer.dart';
 import '../components/Order_widget.dart';
 
-class Orders_page extends StatelessWidget {
-  const Orders_page({super.key});
+
+class orders_pages extends StatelessWidget {
+  const orders_pages({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final orders = Provider.of<Order_list>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pedidos'),
+        title: const Text('Meus Pedidos'),
       ),
-      drawer: Drwaer_arquivo(),
-      body: 
-      orders.itemsCount == 0 ? Center(child: Text('Sem pedidos')) :
-      ListView.builder(
-        itemBuilder: (ctx, i) => Order_widget(orders.items[i]),
-        itemCount: orders.itemsCount,
+      drawer: const Drwaer_arquivo(),
+      body: FutureBuilder(
+        future: Provider.of<Order_list>(context, listen: false).loadOrders(),
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.error != null) {
+            return const Center(
+              child: Text('Ocorreu um erro!'),
+            );
+          } else {
+            return Consumer<Order_list>(
+              builder: (ctx, orders, child) => ListView.builder(
+                itemCount: orders.itemsCount,
+                itemBuilder: (ctx, i) => Order_widget(orders.items[i]),
+              ),
+            );
+          }
+        }),
       ),
     );
   }

@@ -31,8 +31,16 @@ class product_grid_item extends StatelessWidget {
             footer: GridTileBar(
               backgroundColor: Colors.black87,
               leading: IconButton(
-                onPressed: () {
-                  product.toggleFavoriteStatus();
+                onPressed: () async {
+                  try {
+                   await  product.toggleFavoriteStatus();
+                  } catch (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Erro ao favoritar'),
+                      ),
+                    );
+                  }
                 },
                 icon: Icon(
                   _icns(product),

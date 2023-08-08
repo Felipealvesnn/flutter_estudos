@@ -1,6 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class Product with ChangeNotifier{
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../exceptions/http_exception.dart';
+import '../utils/constantes.dart';
+
+class Product with ChangeNotifier {
   final String id;
   final title;
   final description;
@@ -16,10 +22,25 @@ class Product with ChangeNotifier{
     required this.imageUrl,
     this.isFavorite = false,
   });
-
-void toggleFavoriteStatus() {
+  void _toggleFavorite() {
     isFavorite = !isFavorite;
     notifyListeners();
   }
-  
+
+  Future<void> toggleFavoriteStatus() async {
+    try {
+      _toggleFavorite();
+      final response = await http.patch(
+        Uri.parse('${Constantes.baseUrl}/products/$id.json'),
+        body: json.encode({'isFavorite': isFavorite}),
+      );
+      if (response.statusCode >= 400) {
+        _toggleFavorite();
+        throw Http_Exception(
+            'Ocorreu um erro na exclusão do produto', response.statusCode);
+      }
+    } catch (error) {
+      throw Http_Exception('Ocorreu um erro na exclusão do produto', 500);
+    }
+  }
 }

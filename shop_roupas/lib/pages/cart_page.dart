@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_roupas/models/order_pedidos.dart';
 
 import '../components/Cart_item_widget.dart';
 import '../models/cart.dart';
-import '../models/product_list.dart';
 
 class Cart_page extends StatelessWidget {
   const Cart_page({super.key});
@@ -43,14 +40,7 @@ class Cart_page extends StatelessWidget {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     const Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        Provider.of<Order_list>(context, listen: false)
-                            .addOrder(cart);
-                        cart.clear();
-                      },
-                      child: Text('COMPRAR'),
-                    )
+                    CartButton(cart: cart)
                   ]),
             ),
           ),
@@ -62,5 +52,43 @@ class Cart_page extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class CartButton extends StatefulWidget {
+  const CartButton({
+    super.key,
+    required this.cart,
+  });
+
+  final Cart cart;
+
+  @override
+  State<CartButton> createState() => _CartButtonState();
+}
+
+class _CartButtonState extends State<CartButton> {
+  bool _isLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    return _isLoading
+        ? const CircularProgressIndicator()
+        : TextButton(
+            onPressed: widget.cart.itemCount == 0
+                ? null
+                : () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    await Provider.of<Order_list>(context, listen: false)
+                        .addOrder(widget.cart);
+                    setState(() {
+                      _isLoading = false;
+                    });
+
+                    widget.cart.clear();
+                  },
+            child: Text('COMPRAR'),
+          );
   }
 }

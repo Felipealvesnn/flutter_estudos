@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_roupas/models/product.dart';
 
+import '../exceptions/http_exception.dart';
+import '../utils/constantes.dart';
+
 class Product_list with ChangeNotifier {
   List<Product> _list = [];
-  final String _baseUrl =
-      'https://shop-roupas-flutter-default-rtdb.firebaseio.com/';
+  
 
   List<Product> get list {
     return [..._list];
@@ -39,7 +41,7 @@ class Product_list with ChangeNotifier {
 
   Future<void> _updateProduct(Product product) async {
     final response = await http.patch(
-      Uri.parse('$_baseUrl/products/${product.id}.json'),
+      Uri.parse('${Constantes.baseUrl}/products/${product.id}.json'),
       body: json.encode({
         'title': product.title,
         'description': product.description,
@@ -50,7 +52,7 @@ class Product_list with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final value = await http.post(Uri.parse('$_baseUrl/products.json'),
+    final value = await http.post(Uri.parse('${Constantes.baseUrl}/products.json'),
         body: json.encode({
           'title': product.title,
           'description': product.description,
@@ -80,10 +82,12 @@ class Product_list with ChangeNotifier {
         notifyListeners();
       }
       final response =
-          await http.delete(Uri.parse('$_baseUrl/products/${product.id}.json'));
+          await http.delete(Uri.parse('${Constantes.baseUrl}/products/${product.id}.json'));
       if (response.statusCode >= 400) {
         _list.insert(index, product);
         notifyListeners();
+        throw Http_Exception('Ocorreu um erro na exclusão do produto',
+            response.statusCode);
       }
     } catch (error) {
       print(error);
@@ -91,7 +95,7 @@ class Product_list with ChangeNotifier {
   }
 
   Future getProducts() async {
-    final response = await http.get(Uri.parse('$_baseUrl/products.json'));
+    final response = await http.get(Uri.parse('${Constantes.baseUrl}/products.json'));
     Map<String, dynamic> data = json.decode(response.body);
     _list.clear();
     data.forEach((key, value) {
