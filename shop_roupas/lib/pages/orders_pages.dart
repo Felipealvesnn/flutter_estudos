@@ -27,9 +27,12 @@ class orders_pages extends StatelessWidget {
             );
           } else {
             return Consumer<Order_list>(
-              builder: (ctx, orders, child) => ListView.builder(
-                itemCount: orders.itemsCount,
-                itemBuilder: (ctx, i) => Order_widget(orders.items[i]),
+              builder: (ctx, orders, child) => RefreshIndicator(
+                onRefresh: () => orders.loadOrders(),
+                child: ListView.builder(
+                  itemCount: orders.itemsCount,
+                  itemBuilder: (ctx, i) => Order_widget(orders.items[i]),
+                ),
               ),
             );
           }
