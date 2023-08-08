@@ -37,15 +37,16 @@ class Product_list with ChangeNotifier {
     }
   }
 
-  Future<void> _updateProduct(Product product) {
-    if (product != null && product.id != null) {
-      final index = _list.indexWhere((prod) => prod.id == product.id);
-      if (index >= 0) {
-        _list[index] = product;
-        notifyListeners();
-      }
-    }
-    return Future.value();
+  Future<void> _updateProduct(Product product) async {
+    final response = await http.patch(
+      Uri.parse('$_baseUrl/products/${product.id}.json'),
+      body: json.encode({
+        'title': product.title,
+        'description': product.description,
+        'price': product.price,
+        'imageUrl': product.imageUrl,
+      }),
+    );
   }
 
   Future<void> addProduct(Product product) async {
@@ -59,42 +60,51 @@ class Product_list with ChangeNotifier {
         }));
 
     final id = json.decode(value.body)['name'];
-      _list.add(Product(
-        id: id,
-        title: product.title,
-        description: product.description,
-        price: product.price,
-        imageUrl: product.imageUrl,
-        isFavorite: product.isFavorite,
-      ));
-      notifyListeners();
-
-   
+    _list.add(Product(
+      id: id,
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      isFavorite: product.isFavorite,
+    ));
+    notifyListeners();
   }
 
-  void removeProduct(Product product) {
-    if (product != null && product.id != null) {
-      _list.removeWhere((prod) => prod.id == product.id);
-      notifyListeners();
+  Future<void> removeProduct(Product product) async {
+    try {
+      int index = _list.indexWhere((prod) => prod.id == product.id);
+      if (index >= 0) {
+        final product = _list[index];
+        _list.remove(product);
+        notifyListeners();
+      }
+      final response =
+          await http.delete(Uri.parse('$_baseUrl/products/${product.id}.json'));
+      if (response.statusCode >= 400) {
+        _list.insert(index, product);
+        notifyListeners();
+      }
+    } catch (error) {
+      print(error);
     }
   }
 
- Future getProducts() async {
+  Future getProducts() async {
     final response = await http.get(Uri.parse('$_baseUrl/products.json'));
     Map<String, dynamic> data = json.decode(response.body);
     _list.clear();
     data.forEach((key, value) {
       _list.add(Product(
-        id: key,
-        description: value['description'],
-        price: value['price'],
-        imageUrl: value['imageUrl'],
-        title: value['title'],
-        isFavorite: value['isFavorite']
-      ));
+          id: key,
+          description: value['description'],
+          price: value['price'],
+          imageUrl: value['imageUrl'],
+          title: value['title'],
+          isFavorite: value['isFavorite']));
     });
-      notifyListeners();
-    
+    notifyListeners();
+
     return Future.value();
   }
 }
