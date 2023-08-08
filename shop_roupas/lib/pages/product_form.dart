@@ -62,7 +62,7 @@ class _Product_formState extends State<Product_form> {
     setState(() {});
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final isvalid = _formakay.currentState?.validate() ?? false;
     if (!isvalid) {
       return;
@@ -71,14 +71,29 @@ class _Product_formState extends State<Product_form> {
     setState(() {
       _isloading = true;
     });
-
-    Provider.of<Product_list>(context, listen: false)
-        .addProductFromdata(_formData)
-        .then((value) {
-      setState(() => _isloading = false);
-
+    try {
+      await Provider.of<Product_list>(context, listen: false)
+          .addProductFromdata(_formData);
+    } catch (error) {
+      await showDialog<Null>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Ocorreu um erro!'),
+          content: const Text('Ocorreu um erro para salvar o produto!'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Fechar'),
+            )
+          ],
+        ),
+      );
+    } finally {
+      setState(() {
+        _isloading = false;
+      });
       Navigator.of(context).pop();
-    });
+    }
   }
 
   @override

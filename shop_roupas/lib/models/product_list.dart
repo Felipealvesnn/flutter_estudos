@@ -3,11 +3,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shop_roupas/data/dummy_data.dart';
 import 'package:shop_roupas/models/product.dart';
 
 class Product_list with ChangeNotifier {
-  List<Product> _list = dummyProducts;
+  List<Product> _list = [];
   final String _baseUrl =
       'https://shop-roupas-flutter-default-rtdb.firebaseio.com/';
 
@@ -49,8 +48,8 @@ class Product_list with ChangeNotifier {
     return Future.value();
   }
 
-  Future<void> addProduct(Product product) {
-    final future = http.post(Uri.parse('$_baseUrl/products.json'),
+  Future<void> addProduct(Product product) async {
+    final value = await http.post(Uri.parse('$_baseUrl/products.json'),
         body: json.encode({
           'title': product.title,
           'description': product.description,
@@ -58,8 +57,8 @@ class Product_list with ChangeNotifier {
           'imageUrl': product.imageUrl,
           'isFavorite': product.isFavorite,
         }));
-    return future.then<void>((value) {
-      final id = json.decode(value.body)['name'];
+
+    final id = json.decode(value.body)['name'];
       _list.add(Product(
         id: id,
         title: product.title,
@@ -69,7 +68,8 @@ class Product_list with ChangeNotifier {
         isFavorite: product.isFavorite,
       ));
       notifyListeners();
-    });
+
+   
   }
 
   void removeProduct(Product product) {
@@ -79,21 +79,22 @@ class Product_list with ChangeNotifier {
     }
   }
 
-  getProducts() async {
+ Future getProducts() async {
     final response = await http.get(Uri.parse('$_baseUrl/products.json'));
     Map<String, dynamic> data = json.decode(response.body);
     _list.clear();
-    if (data != null) {
-      _list.addAll(data.values.map((prod) => Product(
-            id: prod['id'],
-            title: prod['title'],
-            description: prod['description'],
-            price: prod['price'],
-            imageUrl: prod['imageUrl'],
-            isFavorite: prod['isFavorite'],
-          )));
+    data.forEach((key, value) {
+      _list.add(Product(
+        id: key,
+        description: value['description'],
+        price: value['price'],
+        imageUrl: value['imageUrl'],
+        title: value['title'],
+        isFavorite: value['isFavorite']
+      ));
+    });
       notifyListeners();
-    }
+    
     return Future.value();
   }
 }

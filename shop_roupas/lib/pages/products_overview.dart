@@ -5,6 +5,7 @@ import 'package:shop_roupas/models/cart.dart';
 import '../components/Drawer.dart';
 import '../components/Product_grid.dart';
 import '../components/count_cart.dart';
+import '../models/product_list.dart';
 import '../utils/app_routes.dart';
 
 enum FilterOptions { Favorites, All }
@@ -18,10 +19,27 @@ class Products_overview extends StatefulWidget {
 
 class _Products_overviewState extends State<Products_overview> {
   bool _showFavoriteOnly = false;
+  bool _isloading = true;
+
+  Future<void> _refreshProducts(BuildContext context) {
+    return Provider.of<Product_list>(context, listen: false).getProducts();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<Product_list>(context, listen: false)
+        .getProducts()
+        .then((value) {
+      setState(() {
+        _isloading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         iconTheme:
@@ -31,16 +49,13 @@ class _Products_overviewState extends State<Products_overview> {
         actions: [
           Consumer<Cart>(
             child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(App_routes.Carrinho
-                  );
-                },
-                icon: Icon(Icons.shopping_cart),
-              ),
-            builder: (context, value, filho) => Count_cart(
-              value: value.itemCount,
-              child: filho!
+              onPressed: () {
+                Navigator.of(context).pushNamed(App_routes.Carrinho);
+              },
+              icon: Icon(Icons.shopping_cart),
             ),
+            builder: (context, value, filho) =>
+                Count_cart(value: value.itemCount, child: filho!),
           ),
           PopupMenuButton(
             icon: const Icon(Icons.more_vert),
@@ -73,7 +88,13 @@ class _Products_overviewState extends State<Products_overview> {
         ],
       ),
       drawer: Drwaer_arquivo(),
-      body: Product_grid(_showFavoriteOnly),
+      body: _isloading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : RefreshIndicator( //esse resfresh é para atualizar a pagina
+              onRefresh: () => _refreshProducts(context),
+              child: Product_grid(_showFavoriteOnly)),
     );
   }
 }
