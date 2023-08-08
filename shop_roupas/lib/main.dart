@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_roupas/pages/auth_page.dart';
 import 'package:shop_roupas/pages/cart_page.dart';
 import 'package:shop_roupas/pages/orders_pages.dart';
 import 'package:shop_roupas/pages/product_details.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Lato',
         ),
         routes: {
+           App_routes.auth: (ctx) => auth_page(),
           App_routes.home: (ctx) => Products_overview(),
           App_routes.product_details: (ctx) => Product_details(),
           App_routes.Carrinho: (ctx) => Cart_page(),
