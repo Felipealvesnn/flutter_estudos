@@ -10,6 +10,7 @@ import 'package:shop_roupas/pages/products_overview.dart';
 import 'package:shop_roupas/utils/app_routes.dart';
 import 'package:http/http.dart' as http;
 
+import 'models/auth.dart';
 import 'models/cart.dart';
 import 'models/order_pedidos.dart';
 import 'models/product_list.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => Order_list(),
+        ),
+         ChangeNotifierProvider(
+          create: (ctx) => Auth(),
         ),
       ],
       child: MaterialApp(

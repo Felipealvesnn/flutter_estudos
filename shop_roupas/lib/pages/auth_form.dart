@@ -1,4 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/auth.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -15,7 +20,7 @@ class _auth_formState extends State<auth_form> {
     'email': '',
     'password': '',
   };
-bool _isLoading = false;
+  bool _isLoading = false;
   void _switchAuthMode() {
     if (_authMode == AuthMode.Login) {
       setState(() => _authMode = AuthMode.Signup);
@@ -23,23 +28,45 @@ bool _isLoading = false;
       setState(() => _authMode = AuthMode.Login);
     }
   }
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  _submit() {
+  void _showErroDialog(String msg) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Ocorreu um erro!'),
+        content: Text(msg),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Fechar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+    final provider = Provider.of<Auth>(context, listen: false);
     setState(() => _isLoading = true);
     _formKey.currentState!.save();
-    if (_authMode == AuthMode.Login) {
-      // Provider.of<Auth>(context, listen: false).login(
-      //   _authData['email'] ?? '',
-      //   _authData['password'] ?? '',
-      // );
-    } else {
-      // Provider.of<Auth>(context, listen: false).signup(
-      //   _authData['email'] ?? '',
-      //   _authData['password'] ?? '',
-      // );
+    try {
+      if (_authMode == AuthMode.Login) {
+        await provider.login(
+          _authData['email'] ?? '',
+          _authData['password'] ?? '',
+        );
+      } else {
+        await provider.signup(
+          _authData['email'] ?? '',
+          _authData['password'] ?? '',
+        );
+      }
+    } catch (error) {
+        setState(() => _isLoading = false);
+     _showErroDialog(error.toString());
     }
     setState(() => _isLoading = false);
   }
@@ -56,12 +83,11 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
           borderRadius: BorderRadius.circular(10),
         ),
         child: Container(
-          height: _isLogin() ? 310 : 400,
+          height: _isLogin() ? 410 : 420,
           width: deviceSize.width * 0.75,
           padding: const EdgeInsets.all(16),
           child: Form(
             key: _formKey,
-
             child: Column(
               children: [
                 TextFormField(
@@ -83,9 +109,11 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
                 ),
                 if (_isSignup())
                   TextFormField(
-                    validator: (value) => value != _authData['password']
-                        ? 'Senhas são diferentes!'
-                        : null,
+                    validator: (value) {
+                      value != _authData['password']
+                          ? 'Senhas são diferentes!'
+                          : null;
+                    },
                     decoration:
                         const InputDecoration(labelText: 'Confirmar Senha'),
                     obscureText: true,
@@ -93,19 +121,21 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
                     keyboardType: TextInputType.emailAddress,
                   ),
                 const SizedBox(height: 30),
-                ElevatedButton(
-                    onPressed: () => _submit(),
-                    child: Text(_isLogin() ? 'Entrar' : 'Registrar'),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30.0, vertical: 8.0),
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                      ),
-                    )),
+                _isLoading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: () async => await _submit(),
+                        child: Text(_isLogin() ? 'Entrar' : 'Registrar'),
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0, vertical: 8.0),
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        )),
                 const SizedBox(height: 20),
                 TextButton(
                   onPressed: _switchAuthMode,
