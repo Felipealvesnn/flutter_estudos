@@ -35,7 +35,7 @@ class product_grid_item extends StatelessWidget {
               leading: IconButton(
                 onPressed: () async {
                   try {
-                   await  product.toggleFavoriteStatus(auth.token);
+                   await  product.toggleFavoriteStatus(auth.token, auth.uid);
                   } catch (error) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

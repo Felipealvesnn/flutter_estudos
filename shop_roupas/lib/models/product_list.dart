@@ -13,8 +13,7 @@ class Product_list with ChangeNotifier {
   final String? _uid;
   List<Product> _list = [];
 
-  Product_list(this._token,this._uid, this._list);
-  
+  Product_list([this._token = '', this._uid = '', this._list = const []]);
 
   List<Product> get list {
     return [..._list];
@@ -45,7 +44,8 @@ class Product_list with ChangeNotifier {
 
   Future<void> _updateProduct(Product product) async {
     final response = await http.patch(
-      Uri.parse('${Constantes.baseUrl}/products/${product.id}.json?auth=$_token'),
+      Uri.parse(
+          '${Constantes.baseUrl}/products/${product.id}.json?auth=$_token'),
       body: json.encode({
         'title': product.title,
         'description': product.description,
@@ -56,13 +56,13 @@ class Product_list with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final value = await http.post(Uri.parse('${Constantes.baseUrl}/products.json?auth=$_token'),
+    final value = await http.post(
+        Uri.parse('${Constantes.baseUrl}/products.json?auth=$_token'),
         body: json.encode({
           'title': product.title,
           'description': product.description,
           'price': product.price,
           'imageUrl': product.imageUrl,
-          'isFavorite': product.isFavorite,
         }));
 
     final id = json.decode(value.body)['name'];
@@ -72,7 +72,6 @@ class Product_list with ChangeNotifier {
       description: product.description,
       price: product.price,
       imageUrl: product.imageUrl,
-      isFavorite: product.isFavorite,
     ));
     notifyListeners();
   }
@@ -85,13 +84,13 @@ class Product_list with ChangeNotifier {
         _list.remove(product);
         notifyListeners();
       }
-      final response =
-          await http.delete(Uri.parse('${Constantes.baseUrl}/products/${product.id}.json?auth=$_token'));
+      final response = await http.delete(Uri.parse(
+          '${Constantes.baseUrl}/products/${product.id}.json?auth=$_token'));
       if (response.statusCode >= 400) {
         _list.insert(index, product);
         notifyListeners();
-        throw Http_Exception('Ocorreu um erro na exclusão do produto',
-            response.statusCode);
+        throw Http_Exception(
+            'Ocorreu um erro na exclusão do produto', response.statusCode);
       }
     } catch (error) {
       print(error);
@@ -99,17 +98,25 @@ class Product_list with ChangeNotifier {
   }
 
   Future getProducts() async {
-    final response = await http.get(Uri.parse('${Constantes.baseUrl}/products.json?auth=$_token'));
+    final response = await http
+        .get(Uri.parse('${Constantes.baseUrl}/products.json?auth=$_token'));
+    final responsefavore = await http.get(
+      Uri.parse('${Constantes.UserFavorite}$_uid.json?auth=$_token'),
+    );
+Map<String,dynamic>favdate = responsefavore.body == 'null' ? {} : json.decode(responsefavore.body);
+     
     Map<String, dynamic> data = json.decode(response.body);
     _list.clear();
     data.forEach((key, value) {
+     final isforetir =  favdate[key]?? false;
       _list.add(Product(
-          id: key,
-          description: value['description'],
-          price: value['price'],
-          imageUrl: value['imageUrl'],
-          title: value['title'],
-          isFavorite: value['isFavorite']));
+        id: key,
+        description: value['description'],
+        price: value['price'],
+        imageUrl: value['imageUrl'],
+        title: value['title'],
+        isFavorite: isforetir,
+      ));
     });
     notifyListeners();
 
