@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_roupas/models/cart.dart';
 import 'package:shop_roupas/models/product.dart';
 
+import '../models/auth.dart';
 import '../utils/app_routes.dart';
 
 class product_grid_item extends StatelessWidget {
@@ -13,6 +14,7 @@ class product_grid_item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Product product = Provider.of<Product>(context, listen: true);
+    final Auth auth = Provider.of<Auth>(context, listen: false);
     final Cart cart = Provider.of<Cart>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
@@ -33,7 +35,7 @@ class product_grid_item extends StatelessWidget {
               leading: IconButton(
                 onPressed: () async {
                   try {
-                   await  product.toggleFavoriteStatus();
+                   await  product.toggleFavoriteStatus(auth.token);
                   } catch (error) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

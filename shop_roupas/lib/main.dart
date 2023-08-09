@@ -22,42 +22,33 @@ void main() {
 
 class MyApp extends StatelessWidget {
 //funcao para testar http
-  void fetchData() async {
-
-    String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
-
-    try {
-      final response = await http.get(Uri.parse(apiUrl));
-
-      if (response.statusCode == 200) {
-        // Request successful, handle the response
-        print(response.body);
-      } else {
-        // Request failed with an error status code
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (e) {
-      // An error occurred while making the request
-      print('Error: $e');
-    }
-  }
+ 
   
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => Product_list(),
+         ChangeNotifierProvider(
+          create: (ctx) => Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth,Product_list>(
+          create: (ctx) => Product_list('', '', []),
+          update: (ctx, auth, previousProducts) => Product_list(
+            auth.token,
+            auth.uid,
+            previousProducts == null ? [] : previousProducts.list,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth,Order_list>(
+          create: (ctx) => Order_list( '',[]),
+          update: (ctx, auth, previousOrders) => Order_list(
+            auth.token,
+            previousOrders == null ? [] : previousOrders.items,),
+         
         ),
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
-        ),
-        ChangeNotifierProvider(
-          create: (ctx) => Order_list(),
-        ),
-         ChangeNotifierProvider(
-          create: (ctx) => Auth(),
         ),
       ],
       child: MaterialApp(

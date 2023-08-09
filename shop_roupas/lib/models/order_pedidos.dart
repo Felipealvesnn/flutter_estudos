@@ -22,8 +22,10 @@ class Order_pedidos {
 }
 
 class Order_list with ChangeNotifier {
+  final String? _token;
   List<Order_pedidos> _items = [];
 
+  Order_list(this._token, this._items);
   List<Order_pedidos> get items {
     return [..._items];
   }
@@ -35,7 +37,7 @@ class Order_list with ChangeNotifier {
   Future<void> addOrder(Cart order) async {
     final date = DateTime.now();
     final value =
-        await http.post(Uri.parse('${Constantes.baseUrl}/Order_pedidos.json'),
+        await http.post(Uri.parse('${Constantes.baseUrl}/Order_pedidos.json?auth=$_token'),
             body: json.encode({
               'amount': order.totalAmount,
               'products': order.items.values
@@ -65,7 +67,7 @@ class Order_list with ChangeNotifier {
  
 Future<void> loadOrders() async {
     List<Order_pedidos> loadedItems = [];
-    final response = await http.get(Uri.parse('${Constantes.baseUrl}/Order_pedidos.json'));
+    final response = await http.get(Uri.parse('${Constantes.baseUrl}/Order_pedidos.json?auth=$_token'));
     Map<String, dynamic> data = json.decode(response.body);
     if (data != null) {
       data.forEach((orderId, orderData) {

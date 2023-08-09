@@ -9,7 +9,11 @@ import '../exceptions/http_exception.dart';
 import '../utils/constantes.dart';
 
 class Product_list with ChangeNotifier {
+  final String? _token;
+  final String? _uid;
   List<Product> _list = [];
+
+  Product_list(this._token,this._uid, this._list);
   
 
   List<Product> get list {
@@ -41,7 +45,7 @@ class Product_list with ChangeNotifier {
 
   Future<void> _updateProduct(Product product) async {
     final response = await http.patch(
-      Uri.parse('${Constantes.baseUrl}/products/${product.id}.json'),
+      Uri.parse('${Constantes.baseUrl}/products/${product.id}.json?auth=$_token'),
       body: json.encode({
         'title': product.title,
         'description': product.description,
@@ -52,7 +56,7 @@ class Product_list with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final value = await http.post(Uri.parse('${Constantes.baseUrl}/products.json'),
+    final value = await http.post(Uri.parse('${Constantes.baseUrl}/products.json?auth=$_token'),
         body: json.encode({
           'title': product.title,
           'description': product.description,
@@ -82,7 +86,7 @@ class Product_list with ChangeNotifier {
         notifyListeners();
       }
       final response =
-          await http.delete(Uri.parse('${Constantes.baseUrl}/products/${product.id}.json'));
+          await http.delete(Uri.parse('${Constantes.baseUrl}/products/${product.id}.json?auth=$_token'));
       if (response.statusCode >= 400) {
         _list.insert(index, product);
         notifyListeners();
@@ -95,7 +99,7 @@ class Product_list with ChangeNotifier {
   }
 
   Future getProducts() async {
-    final response = await http.get(Uri.parse('${Constantes.baseUrl}/products.json'));
+    final response = await http.get(Uri.parse('${Constantes.baseUrl}/products.json?auth=$_token'));
     Map<String, dynamic> data = json.decode(response.body);
     _list.clear();
     data.forEach((key, value) {
