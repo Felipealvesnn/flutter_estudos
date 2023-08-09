@@ -62,37 +62,46 @@ class Cart_item_widget extends StatelessWidget {
           horizontal: 15,
           vertical: 4,
         ),
-        child: ListTile(
-          leading: CircleAvatar(
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child:
-                  FittedBox(child: Text('R\$${item.price.toStringAsFixed(2)}')),
+        child: Expanded(
+          child: ListTile(
+            leading: CircleAvatar(
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child:
+                    FittedBox(child: Text('R\$${item.price.toStringAsFixed(2)}')),
+              ),
             ),
-          ),
-          title: Text(item.title),
-          subtitle: Text(
-              'Total: R\$${(item.price * item.quantity).toStringAsFixed(2)}'),
-          trailing: Expanded(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.remove),
-                  onPressed: () {
-                    Carts.diminuiItem(item.productId);
-                  },
-                ),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text('${item.quantity}x')),
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Carts.addItem(Providers);
-                  },
-                ),
-              ],
+            title: FittedBox(child: Text(item.title, style:TextStyle(
+           
+              fontWeight: FontWeight.bold,
+            
+            ) ,)),
+            subtitle: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                  'Total: R\$${(item.price * item.quantity).toStringAsFixed(2)}'),
+            ),
+            trailing: Expanded(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.remove),
+                    onPressed: () {
+                      Carts.diminuiItem(item.productId);
+                    },
+                  ),
+                  Container(
+                      margin: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('${item.quantity}x')),
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      Carts.addItem(Providers);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
