@@ -28,6 +28,7 @@ class _auth_formState extends State<auth_form> {
       setState(() => _authMode = AuthMode.Login);
     }
   }
+
   void _showErroDialog(String msg) {
     showDialog(
       context: context,
@@ -65,8 +66,8 @@ class _auth_formState extends State<auth_form> {
         );
       }
     } catch (error) {
-        setState(() => _isLoading = false);
-     _showErroDialog(error.toString());
+      setState(() => _isLoading = false);
+      _showErroDialog(error.toString());
     }
     setState(() => _isLoading = false);
   }
@@ -100,7 +101,8 @@ class _auth_formState extends State<auth_form> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   TextFormField(
-                    onSaved: (newValue) => _authData['password'] = newValue ?? '',
+                    onSaved: (newValue) =>
+                        _authData['password'] = newValue ?? '',
                     validator: (value) =>
                         value!.length < 5 ? 'Senha muito curta!' : null,
                     decoration: const InputDecoration(labelText: 'Senha'),
