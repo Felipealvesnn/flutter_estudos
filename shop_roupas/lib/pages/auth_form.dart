@@ -14,18 +14,57 @@ class auth_form extends StatefulWidget {
   State<auth_form> createState() => _auth_formState();
 }
 
-class _auth_formState extends State<auth_form> {
+class _auth_formState extends State<auth_form>
+    with SingleTickerProviderStateMixin {
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
   bool _isLoading = false;
+  AnimationController? _controller;
+  Animation<Size>? _heightAnimation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+
+    _heightAnimation = Tween<Size>(
+      begin: Size(double.infinity, 310),
+      end: Size(double.infinity, 410),
+    ).animate(
+      CurvedAnimation(
+        parent: _controller!,
+        curve: Curves.linear,
+      ),
+    );
+
+    _heightAnimation!.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller!.dispose();
+  }
+
   void _switchAuthMode() {
     if (_authMode == AuthMode.Login) {
-      setState(() => _authMode = AuthMode.Signup);
+      setState(() {
+        _authMode = AuthMode.Signup;
+        _controller!.forward();
+      });
     } else {
-      setState(() => _authMode = AuthMode.Login);
+      setState(() {
+        _authMode = AuthMode.Login;
+        _controller!.reverse();
+      });
     }
   }
 
@@ -84,7 +123,8 @@ class _auth_formState extends State<auth_form> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Container(
-          height: _isLogin() ? 300 : 310,
+          //height: _isLogin() ? 300 : 410,
+          height: _heightAnimation!.value.height ?? (_isLogin() ? 300 : 410),
           width: deviceSize.width * 0.75,
           padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
