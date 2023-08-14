@@ -8,6 +8,7 @@ import 'package:shop_roupas/pages/product_details.dart';
 import 'package:shop_roupas/pages/product_form.dart';
 import 'package:shop_roupas/pages/product_pages.dart';
 import 'package:shop_roupas/pages/products_overview.dart';
+import 'package:shop_roupas/utils/Custom_router.dart';
 import 'package:shop_roupas/utils/app_routes.dart';
 import 'package:http/http.dart' as http;
 
@@ -55,6 +56,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
+          pageTransitionsTheme: PageTransitionsTheme(builders: {
+            TargetPlatform.android: CustomPageTransitionBuilder( ),
+            TargetPlatform.iOS: CustomPageTransitionBuilder(),
+          }),
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: Colors.red,
             secondary: Colors.deepOrange,

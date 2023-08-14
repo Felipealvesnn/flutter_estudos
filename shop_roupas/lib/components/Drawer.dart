@@ -38,6 +38,7 @@ class Drwaer_arquivo extends StatelessWidget {
                  Navigator.of(context).pushReplacement(CustomRoute(
                     builder: (ctx) => orders_pages(),
                     
+                    
                  ));
                 },
               ),
