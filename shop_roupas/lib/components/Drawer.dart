@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/auth.dart';
+import '../pages/orders_pages.dart';
+import '../utils/Custom_router.dart';
 import '../utils/app_routes.dart';
 
 class Drwaer_arquivo extends StatelessWidget {
@@ -32,7 +34,11 @@ class Drwaer_arquivo extends StatelessWidget {
                 leading: const Icon(Icons.payment),
                 title: const Text('Pedidos'),
                 onTap: () {
-                  Navigator.of(context).pushReplacementNamed(App_routes.Orders);
+                  // Navigator.of(context).pushReplacementNamed(App_routes.Orders);
+                 Navigator.of(context).pushReplacement(CustomRoute(
+                    builder: (ctx) => orders_pages(),
+                    
+                 ));
                 },
               ),
               Divider(),

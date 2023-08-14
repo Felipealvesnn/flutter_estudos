@@ -16,26 +16,34 @@ class _Order_widgetState extends State<Order_widget> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-         ListTile(
-                  title: Text('R\$ ${widget.order.amount.toStringAsFixed(2)}'),
-                  subtitle: Text(DateFormat('dd/mm/yyyy hh:mm')
-                      .format(widget.order.dateTime)),
-                  trailing: IconButton(
-                    icon:
-                        Icon(_expanded ? Icons.expand_more : Icons.expand_less),
-                    onPressed: () {
-                      setState(() {
-                        _expanded = !_expanded;
-                      });
-                    },
-                  ),
-                ),
-          if (_expanded) ListPedindos(widget: widget)
-        ],
+    final tamanho = widget.order.products.length * 25.0 + 10;
+    return AnimatedContainer(
+      height: _expanded ? tamanho + 92 : 92,
+      duration: Duration(milliseconds: 300),
+      child: Card(
+        margin: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text('R\$ ${widget.order.amount.toStringAsFixed(2)}'),
+              subtitle: Text(
+                  DateFormat('dd/mm/yyyy hh:mm').format(widget.order.dateTime)),
+              trailing: IconButton(
+                icon: Icon(_expanded ? Icons.expand_more : Icons.expand_less),
+                onPressed: () {
+                  setState(() {
+                    _expanded = !_expanded;
+                  });
+                },
+              ),
+            ),
+            if (_expanded)
+              ListPedindos(
+                widget: widget,
+                expanded: _expanded,
+              )
+          ],
+        ),
       ),
     );
   }
@@ -45,18 +53,21 @@ class ListPedindos extends StatelessWidget {
   const ListPedindos({
     super.key,
     required this.widget,
+    required this.expanded,
   });
-
+  final bool expanded;
   final Order_widget widget;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final tamanho = widget.order.products.length * 25.0 + 10;
+    return AnimatedContainer(
+        duration: Duration(milliseconds: 100),
+        height: expanded ? tamanho : 0,
         padding: EdgeInsets.symmetric(
           horizontal: 15,
           vertical: 4,
         ),
-        height: widget.order.products.length * 25.0 + 10,
         child: ListView(
           children: widget.order.products.map((prod) {
             return Row(
