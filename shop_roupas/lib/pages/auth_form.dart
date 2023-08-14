@@ -160,7 +160,7 @@ class _auth_formState extends State<auth_form>
                         decoration: const InputDecoration(labelText: 'Senha'),
                         obscureText: true,
                         controller: TextEditingController(),
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.visiblePassword,
                       ),
                       AnimatedContainer(
                         constraints: BoxConstraints(
